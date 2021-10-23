@@ -1,7 +1,6 @@
 package com.uam.aga.app.models;
 
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -11,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Document(collection = "rol")
 @Data
 @NoArgsConstructor @AllArgsConstructor
-public class Role {
+public class Rol {
 
-	@Id
-	private String id;
+	
 	private String nombre;
 	
 }

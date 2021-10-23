@@ -2,7 +2,7 @@ package com.uam.aga.app.services;
 
 import java.util.List;
 
-import com.uam.aga.app.models.Role;
+import com.uam.aga.app.models.Rol;
 import com.uam.aga.app.models.Usuario;
 
 public interface UsuarioService {
@@ -20,7 +20,7 @@ public interface UsuarioService {
 	 * @param role
 	 * @return
 	 */
-	Role guardarRole(Role role);
+	Rol guardarRole(Rol role);
 	
 	/***
 	 * Asigana al usuario un rol

@@ -2,10 +2,10 @@ package com.uam.aga.app.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.uam.aga.app.models.Role;
+import com.uam.aga.app.models.Rol;
 
 
-public interface RoleRepository extends MongoRepository<Role, String>{
+public interface RoleRepository extends MongoRepository<Rol, String>{
 	
-	public Role  findByNombre(String nombre);;
+	public Rol  findByNombre(String nombre);;
 }

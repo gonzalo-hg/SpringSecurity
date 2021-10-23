@@ -7,5 +7,5 @@ import com.uam.aga.app.models.Usuario;
 
 public interface UsuarioRepository extends MongoRepository<Usuario, String>{
 
-	public Usuario findByUserName(String userName);
+	public Usuario  findByUsername(String username);
 }

@@ -22,7 +22,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uam.aga.app.models.Usuario;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,16 +45,65 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	/**
 	 * Se intenta jacer la auntenticacion con los datos
 	 * recabados del usuarios
-	 */
+	 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		String username = request.getParameter("userName");//Se toma la infor que viene en el request
+		//System.out.println(requ));
+		System.out.println(getUsernameParameter());
+
+		System.out.println(response.getStatus());
+		String username = request.getParameter("username");//Se toma la infor que viene en el request
 		String password = request.getParameter("password");
 		
-		log.info("Username: {}", username); log.info("Password:{} ",password);//Luego se pasa al token de autenticacion 
+		log.info("Username: {}", username); 
+		log.info("Password:{} ",password);//Luego se pasa al token de autenticacion 
+		
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+		
+		System.out.println(authenticationToken.getName());
+		System.out.println("Que dices: "+ authenticationManager.authenticate(authenticationToken).toString());
+		System.out.println("Cualquiera");
 		return authenticationManager.authenticate(authenticationToken);
+	}*/
+	
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
+		
+		String username = obtainUsername(request);
+		String password = obtainPassword(request);
+		
+		if(username != null && password !=null) {
+			logger.info("Username desde request parameter (form-data): " + username);
+			logger.info("Password desde request parameter (form-data): " + password);
+			
+		} else {
+			Usuario user = null;
+			try {
+				
+				user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
+				
+				username = user.getUsername();
+				password = user.getPassword();
+				
+				logger.info("Username desde request InputStream (raw): " + username);
+				logger.info("Password desde request InputStream (raw): " + password);
+				
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		username = username.trim();
+		
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+		
+		return authenticationManager.authenticate(authToken);
 	}
 	
 	/***
@@ -64,6 +116,9 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authentication) throws IOException, ServletException {
+		System.out.println("Entre aqui :3");
+		
+		
 		User usuario = (User) authentication.getPrincipal();
 		Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());//Esto debe ponerse en otro lado
 		String accessToken = JWT.create()

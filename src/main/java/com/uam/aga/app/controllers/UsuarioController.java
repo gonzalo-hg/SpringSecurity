@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.uam.aga.app.models.Role;
+import com.uam.aga.app.models.Rol;
 import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.services.UsuarioServiceImpl;
 
@@ -38,7 +38,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/role/guardar")
-	public ResponseEntity<Role>guardarRol( @RequestBody Role role){
+	public ResponseEntity<Rol>guardarRol( @RequestBody Rol role){
 		URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/guardar").toString());
 		return ResponseEntity.created(uri).body(usuarioService.guardarRole(role));
 	}

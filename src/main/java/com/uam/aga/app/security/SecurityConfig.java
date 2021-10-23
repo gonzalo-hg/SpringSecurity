@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
 	
-/*
+		 /*
 		 * DEshabilitamos la falsificacion de solicitudes entre sitios	
 		 * Luego se crea la politica de gestion de sesisones  httpp
 		 * **/

@@ -1,7 +1,6 @@
 package com.uam.aga.app.models;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,10 +16,10 @@ public class Usuario {
 	@Id
 	private String id;
 	private String nombre;
-	private String userName;
+	private String username;
 	private String password;
 	
-	
-	private Collection<Role> roles = new ArrayList<>();
+	private List<Rol>  roles;
 
 }
+	

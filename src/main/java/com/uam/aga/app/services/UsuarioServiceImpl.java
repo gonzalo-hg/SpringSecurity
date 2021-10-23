@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.uam.aga.app.models.Role;
+import com.uam.aga.app.models.Rol;
 import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.repository.RoleRepository;
 import com.uam.aga.app.repository.UsuarioRepository;
@@ -36,8 +36,13 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	private RoleRepository roleRepository;
 	
 	@Autowired 
-	private  PasswordEncoder passwordEnconder; //La usamos para codificar la contraseña 
+	private  PasswordEncoder passwordEnconder; //La usamos para codificar la contraseña
 	
+	
+	/**
+	 * Cambiar a ingles los nombres de los metodos 
+	 * 
+	 */
 	@Override
 	public Usuario guardarUsuario(Usuario usuario) {
 		log.info("Se guardo un usuario {} en la BD",usuario.getNombre());
@@ -46,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	}
 
 	@Override
-	public Role guardarRole(Role role) {
+	public Rol guardarRole(Rol role) {
 		log.info("Se guardo un role {} en la BD", role.getNombre());
 		return roleRepository.save(role);
 	}
@@ -54,14 +59,14 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	@Override
 	public void agregaRolUsuario(String username, String rolName) {
 		log.info("Agregando un role {} al usuario {} en la BD", rolName, username);
-		Usuario usuario = usuarioRepository.findByUserName(username);
-		Role role = roleRepository.findByNombre(rolName);
+		Usuario usuario = usuarioRepository.findByUsername(username);
+		Rol role = roleRepository.findByNombre(rolName);
 		usuario.getRoles().add(role);
 	}
 
 	@Override
 	public Usuario getUsuario(String username) {
-		return usuarioRepository.findByUserName(username);
+		return usuarioRepository.findByUsername(username);
 	}
 
 	@Override
@@ -76,28 +81,29 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Query query  = new Query();
-		query.addCriteria(new Criteria().andOperator(Criteria.where("userName").is(username)));
+		query.addCriteria(new Criteria().andOperator(Criteria.where("username").is(username)));
 		
-		log.error("QUe entro aqui:{} {}", username,query);
-		Usuario usuario = usuarioRepository.findByUserName(username);
+		log.info("QUe entro aqui:{} {}", username,query);
+		Usuario usuario = usuarioRepository.findByUsername(username);
 		if(usuario == null) {
 			log.error("USuario no encontado en la bd");
 			throw new UsernameNotFoundException("USuario no encontado en la bd");
 		}
 		else {
-			log.info("USuario  encontado en la bd: {}", username);
+			log.info("USuario  encontado en la bd: {}", usuario);
 		}
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		
 		usuario.getRoles().forEach(role -> {
 			authorities.add(new SimpleGrantedAuthority(role.getNombre()));
 			});
 		
-		return new User(usuario.getUserName(), usuario.getPassword(),authorities);
+		return new User(usuario.getUsername(), usuario.getPassword(),authorities);
 	}
 
 }
 
-/***
+/**
  * Autenticacion es verificar quien eres
  * 
  * Autorizacion, son los limites en los que peudes navegar en la aplicacion
