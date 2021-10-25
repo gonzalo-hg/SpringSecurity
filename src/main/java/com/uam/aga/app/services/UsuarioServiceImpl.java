@@ -6,8 +6,6 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,10 +78,10 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Query query  = new Query();
-		query.addCriteria(new Criteria().andOperator(Criteria.where("username").is(username)));
+		//Query query  = new Query();
+		//0q0uery.addCriteria(new Criteria().andOperator(Criteria.where("username").is(username)));
 		
-		log.info("QUe entro aqui:{} {}", username,query);
+		//log.info("QUe entro aqui:{} {}", username,query);
 		Usuario usuario = usuarioRepository.findByUsername(username);
 		if(usuario == null) {
 			log.error("USuario no encontado en la bd");
@@ -96,6 +94,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		
 		usuario.getRoles().forEach(role -> {
 			authorities.add(new SimpleGrantedAuthority(role.getNombre()));
+			System.out.println(role);
 			});
 		
 		return new User(usuario.getUsername(), usuario.getPassword(),authorities);

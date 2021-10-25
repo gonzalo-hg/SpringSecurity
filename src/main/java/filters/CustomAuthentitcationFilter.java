@@ -27,10 +27,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uam.aga.app.models.Usuario;
 
-import lombok.extern.slf4j.Slf4j;
-
-
-@Slf4j
 public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationFilter{
 
 	@Autowired
@@ -43,6 +39,9 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	
 	//----------->NO pasa la autenticacion, devuelve valores nulos :S
 	/**
+	 * 
+https://www.scaledagileframework.com/
+https://www.finvivir.com.mx/quienes-somos
 	 * Se intenta jacer la auntenticacion con los datos
 	 * recabados del usuarios
 	 
@@ -107,7 +106,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	}
 	
 	/***
-	 * 
+	 * https://drive.google.com/file/d/1NpJpb9Kcrj9ani1qI0Fm5jNecErHQKrQ/view?usp=sharing
 	 *Este metodo es llamdao cuando la autenticacion fue exitosa
 	 *y se genera el token para enviar la informacion del usuario
 	 *@param request
@@ -117,30 +116,27 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authentication) throws IOException, ServletException {
 		System.out.println("Entre aqui :3");
-		
-		
 		User usuario = (User) authentication.getPrincipal();
+		//Se define un objeto Algorithm para la verificacion del token 
 		Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());//Esto debe ponerse en otro lado
+								//Mezcla el secreo con datos del mensaje y hace esto por setunda vez
 		String accessToken = JWT.create()
 				.withSubject(usuario.getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))
+				.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))//Se define el tiempo del token 
 				.withIssuer(request.getRequestURL().toString())
 				.withClaim("roles", usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-				.sign(algorithm);
+				.sign(algorithm);//Crea un nuevo JWT y firma con el algoritmo dado
 		String refreshToken = JWT.create()
 				.withSubject(usuario.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() +30*60*1000))
 				.withIssuer(request.getRequestURL().toString())
 				.sign(algorithm);
-		//response.setHeader("accessToken", accessToken);
-		//response.setHeader("refreshToken", refreshToken); 
 		Map<String, String> tokens  = new HashMap<>();
+		//response.setHeader("access_token", accessToken);
+		//response.setHeader("refresh_token", refreshToken);
 		tokens.put("accessToken", accessToken);
 		tokens.put("refreshToken", refreshToken);
 		response.setContentType("application/json");
 		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 	}
-
-	
-	
 }
