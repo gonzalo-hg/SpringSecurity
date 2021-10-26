@@ -69,7 +69,7 @@ https://www.finvivir.com.mx/quienes-somos
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		
+		System.out.println("Entras?????");
 		String username = obtainUsername(request);
 		String password = obtainPassword(request);
 		
@@ -77,10 +77,12 @@ https://www.finvivir.com.mx/quienes-somos
 			logger.info("Username desde request parameter (form-data): " + username);
 			logger.info("Password desde request parameter (form-data): " + password);
 			
+			
 		} else {
 			Usuario user = null;
 			try {
-				
+				System.out.println("Usuario: " +username);
+			System.out.println("Password: "+ password);
 				user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
 				
 				username = user.getUsername();
@@ -94,7 +96,7 @@ https://www.finvivir.com.mx/quienes-somos
 			} catch (JsonMappingException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace(); 
 			}
 		}
 
@@ -138,5 +140,18 @@ https://www.finvivir.com.mx/quienes-somos
 		tokens.put("refreshToken", refreshToken);
 		response.setContentType("application/json");
 		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+	}
+	
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+
+		Map<String, Object> body = new HashMap<String, Object>();
+		body.put("mensaje", "Error de autenticación: username o password incorrecto!");
+		body.put("error", failed.getMessage());
+		
+		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+		response.setStatus(401);
+		response.setContentType("application/json");
 	}
 }

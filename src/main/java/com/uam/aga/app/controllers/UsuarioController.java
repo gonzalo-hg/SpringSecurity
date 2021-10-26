@@ -21,7 +21,7 @@ import com.uam.aga.app.services.UsuarioServiceImpl;
 import lombok.Data;
 
 @RestController
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE })
+
 @RequestMapping("/api")
 public class UsuarioController {
 
@@ -51,6 +51,8 @@ public class UsuarioController {
 		usuarioService.agregaRolUsuario(role.getNombreUsuario(), role.getRoleName());
 		return ResponseEntity.ok().build();
 	}
+	
+	
 }
 
 

@@ -47,8 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		 * Luego se crea la politica de gestion de sesisones  httpp
 		 * **/
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {		
+	protected void configure(HttpSecurity http) throws Exception {	
 		CustomAuthentitcationFilter customAuthentitcationFilter =  new CustomAuthentitcationFilter(authenticationManagerBean());
+		
 		//Cambiamos el url que tiene por defecto Spring SEcurity, para poder agregar login 
 		
 		/*CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -64,11 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    */
 		
 		customAuthentitcationFilter.setFilterProcessesUrl("/api/login");
-		
+		http.cors().and();//https://www.baeldung.com/spring-cors
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().antMatchers("/api/login/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").hasAnyAuthority("user");
+		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").hasAnyAuthority("user");
+		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/usuario/guardar/**").hasAnyAuthority("admin");
 		http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(customAuthentitcationFilter);
