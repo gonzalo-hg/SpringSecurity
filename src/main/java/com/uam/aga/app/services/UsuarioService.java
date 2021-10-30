@@ -5,6 +5,12 @@ import java.util.List;
 import com.uam.aga.app.models.Rol;
 import com.uam.aga.app.models.Usuario;
 
+/**
+ * En esta clase se definen todos los metodos que nos ayudaran 
+ * a administrar los usuarios
+ * @author gonzalo
+ *
+ */
 public interface UsuarioService {
 
 	/**
@@ -12,7 +18,7 @@ public interface UsuarioService {
 	 * @param usuario
 	 * @return
 	 */
-	Usuario guardarUsuario(Usuario usuario);
+	Usuario saveUsuario(Usuario usuario);
 	
 	/***
 	 * Metodo que guarda un role, es necesario para asignarle 
@@ -20,14 +26,14 @@ public interface UsuarioService {
 	 * @param role
 	 * @return
 	 */
-	Rol guardarRole(Rol role);
+	Rol saveRole(Rol role);
 	
 	/***
 	 * Asigana al usuario un rol
 	 * @param username
 	 * @param rolName
 	 */
-	void agregaRolUsuario(String username, String rolName);
+	void addRolUsuario(String username, String rolName);
 	
 	/***
 	 * Metodo que devuelve un usuario
@@ -37,7 +43,7 @@ public interface UsuarioService {
 	Usuario getUsuario(String username);
 	
 	/***
-	 * Consulta una lista de usuarios
+	 * Consulta una lista de todos los usuarios
 	 * @return
 	 */
 	List<Usuario>getUsuarios();

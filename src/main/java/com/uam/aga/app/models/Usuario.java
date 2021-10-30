@@ -9,8 +9,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que define la coleecion Usuarios en la BD 
+ * @author gonzalo
+ *
+ */
 @Document(collection = "Usuarios")
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data 
+
+/**
+ * Definimos un constructor sin argumetos
+ * @author gonzalo
+ */
+@NoArgsConstructor 
+
+/***
+ * Definimos un constructor con argumentos
+ * @author gonzalo
+ */
+@AllArgsConstructor
+
 public class Usuario {
 	
 	@Id

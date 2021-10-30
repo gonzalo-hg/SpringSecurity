@@ -27,6 +27,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uam.aga.app.models.Usuario;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationFilter{
 
 	@Autowired
@@ -44,7 +47,7 @@ https://www.scaledagileframework.com/
 https://www.finvivir.com.mx/quienes-somos
 	 * Se intenta jacer la auntenticacion con los datos
 	 * recabados del usuarios
-	 
+	 */
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
@@ -55,6 +58,7 @@ https://www.finvivir.com.mx/quienes-somos
 		String username = request.getParameter("username");//Se toma la infor que viene en el request
 		String password = request.getParameter("password");
 		
+		
 		log.info("Username: {}", username); 
 		log.info("Password:{} ",password);//Luego se pasa al token de autenticacion 
 		
@@ -64,9 +68,9 @@ https://www.finvivir.com.mx/quienes-somos
 		System.out.println("Que dices: "+ authenticationManager.authenticate(authenticationToken).toString());
 		System.out.println("Cualquiera");
 		return authenticationManager.authenticate(authenticationToken);
-	}*/
+	}
 	
-	@Override
+	/*@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		System.out.println("Entras?????");
@@ -105,7 +109,7 @@ https://www.finvivir.com.mx/quienes-somos
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 		
 		return authenticationManager.authenticate(authToken);
-	}
+	}*/
 	
 	/***
 	 * https://drive.google.com/file/d/1NpJpb9Kcrj9ani1qI0Fm5jNecErHQKrQ/view?usp=sharing

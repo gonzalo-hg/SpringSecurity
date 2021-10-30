@@ -1,10 +1,5 @@
 package com.uam.aga.app.security;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,14 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-
 import filters.CustomAuthentitcationFilter;
 import lombok.RequiredArgsConstructor;
 
+/***
+ * Esta clase permite hacer todas las configuraciones necesarias para decirle a Spring
+ * que tenemos nuestras propios usuarios registrados en la BD a los cuales se les hara una autenticacion
+ * y una validacion. Es decir se habilita otro tipo de configuracion de seguridad
+ * @author gonzalo
+ *
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -33,10 +30,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	/**
+	 * La inyeccion de esta clase es para 
+	 */
 	@Autowired
 	private  UserDetailsService userDetailsService;
 	
 	
+	/**
+	 * En este metodo anulamos el configure por default
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
@@ -51,19 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		CustomAuthentitcationFilter customAuthentitcationFilter =  new CustomAuthentitcationFilter(authenticationManagerBean());
 		
 		//Cambiamos el url que tiene por defecto Spring SEcurity, para poder agregar login 
-		
-		/*CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        corsConfiguration.setAllowedOrigins(List.of("*"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setExposedHeaders(List.of("Authorization"));
-        
-        // You can customize the following part based on your project, it's only a sample
-        http.authorizeRequests().antMatchers("/**").permitAll().anyRequest()
-                .authenticated().and().csrf().disable().cors().configurationSource(request -> corsConfiguration);
-	    */
-		
+	
 		customAuthentitcationFilter.setFilterProcessesUrl("/api/login");
 		http.cors().and();//https://www.baeldung.com/spring-cors
 		http.csrf().disable();
@@ -71,7 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers("/api/login/**").permitAll();
 		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").hasAnyAuthority("user");
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/solo/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/usuario/guardar/**").hasAnyAuthority("admin");
+		
 		http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(customAuthentitcationFilter);
 	}
