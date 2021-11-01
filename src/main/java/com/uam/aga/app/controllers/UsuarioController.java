@@ -14,9 +14,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.uam.aga.app.models.Rol;
 import com.uam.aga.app.models.Usuario;
+import com.uam.aga.app.services.AlumnoService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
 
 import lombok.Data;
+import mx.uam.springboot.app.negocio.modelo.Alumno;
 
 @RestController
 @RequestMapping("/api")
@@ -24,6 +26,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioServiceImpl usuarioService;
+	
+	@Autowired
+	private AlumnoService alumnoService;
 	
 	/**
 	 * Meotodo que devuelve una lista de usuarios mediante 
@@ -50,6 +55,11 @@ public class UsuarioController {
 	public ResponseEntity<?>agregaRolUsuario( @RequestBody RoleDeUsuario role){
 		usuarioService.addRolUsuario(role.getNombreUsuario(), role.getRoleName());
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/alumnos/solo")
+	public List<Alumno> buscaUno() {
+		return alumnoService.consultaAlumno();
 	}
 	
 	

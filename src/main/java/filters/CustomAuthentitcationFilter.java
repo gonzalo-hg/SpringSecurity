@@ -27,28 +27,25 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uam.aga.app.models.Usuario;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationFilter{
 
 	@Autowired
 	private  AuthenticationManager authenticationManager;
 	
+	/**
+	 * Contructor para crear la autenticacion
+	 * @param authenticationManager
+	 */
 	public CustomAuthentitcationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
 	
-	
-	//----------->NO pasa la autenticacion, devuelve valores nulos :S
 	/**
 	 * 
-https://www.scaledagileframework.com/
-https://www.finvivir.com.mx/quienes-somos
-	 * Se intenta jacer la auntenticacion con los datos
-	 * recabados del usuarios
+	 *Se hace la autenticacion cada vez que el usuario quiere iniciar sesion 
 	 */
-	@Override
+	/*@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		//System.out.println(requ));
@@ -58,9 +55,10 @@ https://www.finvivir.com.mx/quienes-somos
 		String username = request.getParameter("username");//Se toma la infor que viene en el request
 		String password = request.getParameter("password");
 		
-		
+		if(username != null && password != null)
 		log.info("Username: {}", username); 
 		log.info("Password:{} ",password);//Luego se pasa al token de autenticacion 
+		
 		
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 		
@@ -68,12 +66,14 @@ https://www.finvivir.com.mx/quienes-somos
 		System.out.println("Que dices: "+ authenticationManager.authenticate(authenticationToken).toString());
 		System.out.println("Cualquiera");
 		return authenticationManager.authenticate(authenticationToken);
-	}
+	}*/
 	
-	/*@Override
+	/**
+	 * Se anula la autenticacion por default de Spring 
+	 */
+	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		System.out.println("Entras?????");
 		String username = obtainUsername(request);
 		String password = obtainPassword(request);
 		
@@ -104,12 +104,15 @@ https://www.finvivir.com.mx/quienes-somos
 			}
 		}
 
+		//Se devuelve el username pero sin espacios en blanco, al inicio o final
 		username = username.trim();
 		
+		//Se agrega el request, el usuario que pide inicio de sesio
+		//Y el administrador de hacer autetnica con los datos del request
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
-		
+		//Se puede establecer enviar el token al body
 		return authenticationManager.authenticate(authToken);
-	}*/
+	}
 	
 	/***
 	 * https://drive.google.com/file/d/1NpJpb9Kcrj9ani1qI0Fm5jNecErHQKrQ/view?usp=sharing
@@ -117,18 +120,24 @@ https://www.finvivir.com.mx/quienes-somos
 	 *y se genera el token para enviar la informacion del usuario
 	 *@param request
 	 */
-
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authentication) throws IOException, ServletException {
-		System.out.println("Entre aqui :3");
+	
+		//Guardamos el usuario autenticado
 		User usuario = (User) authentication.getPrincipal();
 		//Se define un objeto Algorithm para la verificacion del token 
+		//y se firma el token con la palabra secret
+		//Esa palabra se tiene que cambiar y guardar en otro lugar
+		//De preferencia que vaya codificada
 		Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());//Esto debe ponerse en otro lado
 								//Mezcla el secreo con datos del mensaje y hace esto por setunda vez
+		//public static final String SECRET = Base64Utils.encodeToString("Alguna.Clave.Secreta.123456".getBytes()); ejemplo de una palabra secreta
+
 		String accessToken = JWT.create()
+				//pasamos el nombre del usuario en una cedena
 				.withSubject(usuario.getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))//Se define el tiempo del token 
+				.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
 				.withIssuer(request.getRequestURL().toString())
 				.withClaim("roles", usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.sign(algorithm);//Crea un nuevo JWT y firma con el algoritmo dado
@@ -138,14 +147,21 @@ https://www.finvivir.com.mx/quienes-somos
 				.withIssuer(request.getRequestURL().toString())
 				.sign(algorithm);
 		Map<String, String> tokens  = new HashMap<>();
-		//response.setHeader("access_token", accessToken);
-		//response.setHeader("refresh_token", refreshToken);
+		//response.setHeader("access_token", accessToken);//Se pasa como un header
+		//response.setHeader("refresh_token", refreshToken);//se pasa como un header
+		//Pasamos los token al body
 		tokens.put("accessToken", accessToken);
 		tokens.put("refreshToken", refreshToken);
+		response.setStatus(200);
 		response.setContentType("application/json");
 		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 	}
 	
+	/**
+	 * Este metodo se lanza cuando el usuario o la contraseña no son validos
+	 * Se anula el metodo unsuccessfulAuthentication de Spring para personalizarlo de la siguiente manera
+	 * La respuesta es un 401
+	 */
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {

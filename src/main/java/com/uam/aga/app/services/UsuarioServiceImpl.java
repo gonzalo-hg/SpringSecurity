@@ -100,7 +100,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	 * Este metodo se implementa para cargar 
 	 * los usuarios desde la base de datos
 	 * y se devuelve el usuario encontrado con seguridad
-	 * @param
+	 * @param Es el nombre de usuario a encontrar
 	 * 
 	 */
 	@Override

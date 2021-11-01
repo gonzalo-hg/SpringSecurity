@@ -1,4 +1,4 @@
-package mx.uam.springboot.app.negocio;
+package com.uam.aga.app.services;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,8 +15,12 @@ public class SpringSecurityDosApplication {
 		SpringApplication.run(SpringSecurityDosApplication.class, args);
 	}
 	
+	/**
+	 * Se crea un componente que va a utilizar spring para codificar el password
+	 * @return 
+	 */
 	@Bean
-	PasswordEncoder passwordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	

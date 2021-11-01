@@ -12,7 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import filters.CustomAuthentitcationFilter;
+import filters.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 
 /***
@@ -27,6 +30,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
+	/**
+	 * 
+	 */
 	@Autowired
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -38,7 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
 	/**
-	 * En este metodo anulamos el configure por default
+	 * En este metodo anulamos el configure por default. Crea los usuarios y 
+	 * el passwordEnconder sirve para codificar la contraseña
+	 * @param Nos sirve para risgtrar los usuarios
+	 * @throws 
 	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,19 +63,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		CustomAuthentitcationFilter customAuthentitcationFilter =  new CustomAuthentitcationFilter(authenticationManagerBean());
 		
 		//Cambiamos el url que tiene por defecto Spring SEcurity, para poder agregar login 
-	
 		customAuthentitcationFilter.setFilterProcessesUrl("/api/login");
 		http.cors().and();//https://www.baeldung.com/spring-cors
 		http.csrf().disable();
+		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers("/","/css/**","/js/**","/alumnos/solo/").permitAll();
+		//.antMatchers("/usuario/**").hasAnyRole("admin")
+		//.anyRequest().authenticated();
+		
 		http.authorizeRequests().antMatchers("/api/login/**").permitAll();
-		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").hasAnyAuthority("user");
-		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/solo/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").hasAnyAuthority("user");
+		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").permitAll();
+		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/solo/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/solo/**").hasAnyAuthority("admin");
+		
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/usuario/guardar/**").hasAnyAuthority("admin");
 		
 		http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(customAuthentitcationFilter);
+		http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 
