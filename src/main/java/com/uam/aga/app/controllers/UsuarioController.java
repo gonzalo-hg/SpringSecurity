@@ -1,7 +1,11 @@
 package com.uam.aga.app.controllers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.uam.aga.app.models.Rol;
 import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.services.AlumnoService;
+import com.uam.aga.app.services.AuthorizationService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
 
 import lombok.Data;
@@ -29,6 +36,9 @@ public class UsuarioController {
 	
 	@Autowired
 	private AlumnoService alumnoService;
+	
+	@Autowired
+	private AuthorizationService authorizationService;
 	
 	/**
 	 * Meotodo que devuelve una lista de usuarios mediante 
@@ -62,6 +72,10 @@ public class UsuarioController {
 		return alumnoService.consultaAlumno();
 	}
 	
+	@GetMapping("/token/refresh")
+	public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws JsonGenerationException, JsonMappingException, IOException{
+		authorizationService.refreshauthorizationToken(request, response);
+	}
 	
 }
 

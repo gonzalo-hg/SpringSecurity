@@ -131,7 +131,8 @@ public class AlumnoService {
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("PLA").is("57"),
 				Criteria.where("UT_RE").is("20P")));
-		query.fields().include("MAT","PLA","EDAD","PATE","MATE","NOM"); 
+		query.fields().exclude("PLA","EDAD","PATE","MATE","NOM");
+		
 		List<Alumno> alumno = mongoTemplate.find(query,Alumno.class);
 		return alumno;
 	}

@@ -46,7 +46,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		System.out.println("EntrasSSSSSSSSS????");
 		//Si el usuario quiere solo iniciar sesion, no pasa por ningun filtro
-		if(request.getServletPath().equals("/api/login")) {
+		if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
 			filterChain.doFilter(request, response);
 			System.out.println("Entras????");
 		}
@@ -92,5 +92,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 		}
 		
 	}
+	
+	
 
 }
