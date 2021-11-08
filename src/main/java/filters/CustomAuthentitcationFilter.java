@@ -42,34 +42,8 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	}
 	
 	/**
-	 * 
-	 *Se hace la autenticacion cada vez que el usuario quiere iniciar sesion 
-	 */
-	/*@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException {
-		//System.out.println(requ));
-		System.out.println(getUsernameParameter());
-
-		System.out.println(response.getStatus());
-		String username = request.getParameter("username");//Se toma la infor que viene en el request
-		String password = request.getParameter("password");
-		
-		if(username != null && password != null)
-		log.info("Username: {}", username); 
-		log.info("Password:{} ",password);//Luego se pasa al token de autenticacion 
-		
-		
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-		
-		System.out.println(authenticationToken.getName());
-		System.out.println("Que dices: "+ authenticationManager.authenticate(authenticationToken).toString());
-		System.out.println("Cualquiera");
-		return authenticationManager.authenticate(authenticationToken);
-	}*/
-	
-	/**
 	 * Se anula la autenticacion por default de Spring 
+	 * Se hace la autenticacion cada vez que el usuario quiere iniciar sesion 
 	 */
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -147,18 +121,20 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 				.withIssuer(request.getRequestURL().toString())
 				.sign(algorithm);
 		Map<String, String> tokens  = new HashMap<>();
-		//response.setHeader("access_token", accessToken);//Se pasa como un header
+		response.setHeader("access_token", accessToken);//Se pasa como un header
 		//response.setHeader("refresh_token", refreshToken);//se pasa como un header
+		response.setHeader("nombreUsuario", usuario.getUsername());
 		//Pasamos los token al body
 		tokens.put("accessToken", accessToken);
 		tokens.put("refreshToken", refreshToken);
+		tokens.put("username", usuario.getUsername());
 		response.setStatus(200);
 		response.setContentType("application/json");
 		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 	}
 	
 	/**
-	 * Este metodo se lanza cuando el usuario o la contraseña no son validos
+	 * Este metodo se lanza cuando el usuario o la contraseña no son validos o si son nulos
 	 * Se anula el metodo unsuccessfulAuthentication de Spring para personalizarlo de la siguiente manera
 	 * La respuesta es un 401
 	 */
