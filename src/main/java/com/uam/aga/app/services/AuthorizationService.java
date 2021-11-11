@@ -48,7 +48,7 @@ public class AuthorizationService {
 				String accessToken = JWT.create()
 						//pasamos el nombre del usuario en una cedena
 						.withSubject(usuario.getUsername())
-						.withExpiresAt(new Date(System.currentTimeMillis() +30*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
+						.withExpiresAt(new Date(System.currentTimeMillis() +60*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
 						.withIssuer(request.getRequestURL().toString())
 						.withClaim("roles", usuario.getRoles().stream().map(Rol::getNombre).collect(Collectors.toList()))
 						.sign(algorithm);//Crea un nuevo JWT y firma con el algoritmo dado
