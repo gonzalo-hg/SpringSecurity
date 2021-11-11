@@ -127,7 +127,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		//Pasamos los token al body
 		tokens.put("accessToken", accessToken);
 		tokens.put("refreshToken", refreshToken);
-		tokens.put("username", usuario.getUsername());
+		//tokens.put("username", usuario.getUsername());
 		response.setStatus(200);
 		response.setContentType("application/json");
 		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
