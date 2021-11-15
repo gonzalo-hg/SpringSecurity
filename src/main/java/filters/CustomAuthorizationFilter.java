@@ -2,17 +2,19 @@ package filters;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
-
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.JWT;
@@ -22,10 +24,6 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * Esta clase personalizada esta creada para que cada vez que un usuario 
@@ -47,8 +45,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 		System.out.println("EntrasSSSSSSSSS????");
 		//Si el usuario quiere solo iniciar sesion, no pasa por ningun filtro
 		if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
+			//Si el path de entrada es igual a los anteriores se deja pasar a la autorizacion
 			filterChain.doFilter(request, response);
-			System.out.println("Entras????");
 		}
 		//Si desea hacer otro request, entonces hace los siguientes filtros de reclamación
 		else {
@@ -61,8 +59,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 					Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 					JWTVerifier verifier =  JWT.require(algorithm).build();
 					DecodedJWT decodedJWT = verifier.verify(token);
+					//Decodificamos el nombre de usuario
 					String username = decodedJWT.getSubject();
+					//Decodificamos los roles del uruarios, se extrae como un array
 					String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+					
 					
 					Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 					System.out.println("Roles: "+ authorities.stream());
@@ -77,6 +78,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 					SecurityContextHolder.getContext().setAuthentication(authentication);
 					filterChain.doFilter(request, response);
 				} catch (Exception e) {
+					System.out.println("Error dentro del Custom");
 					log.error("Error  loggin in: {}", e.getMessage());
 					response.setHeader("error", e.getMessage());
 					response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());

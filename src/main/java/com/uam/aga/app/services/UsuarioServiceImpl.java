@@ -44,9 +44,10 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	 * @return el usuario guardado
 	 */
 	@Override
-	public Usuario saveUsuario(Usuario usuario) {
+	public Usuario saveUsuario(Usuario usuario){
 		log.info("Se guardo un usuario {} en la BD",usuario.getNombre());
 		usuario.setPassword(passwordEnconder.encode(usuario.getPassword()));
+		
 		return usuarioRepository.save(usuario);
 	}
 	
@@ -105,10 +106,6 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		//Query query  = new Query();
-		//0q0uery.addCriteria(new Criteria().andOperator(Criteria.where("username").is(username)));
-		
-		//log.info("QUe entro aqui:{} {}", username,query);
 		Usuario usuario = usuarioRepository.findByUsername(username);
 		if(usuario == null) {
 			log.error("USuario no encontado en la bd");

@@ -35,7 +35,8 @@ public class AuthorizationService {
 		
 		
 		if(authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
-			try {		
+			try {	
+				System.out.println("Entras al AuthorizationService");
 				//Eliminanos el prefijo del token 
 				String refreshToken = authorizationHeader.substring(TOKEN_PREFIX.length());
 				Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -47,19 +48,19 @@ public class AuthorizationService {
 				String accessToken = JWT.create()
 						//pasamos el nombre del usuario en una cedena
 						.withSubject(usuario.getUsername())
-						.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
+						.withExpiresAt(new Date(System.currentTimeMillis() +60*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
 						.withIssuer(request.getRequestURL().toString())
 						.withClaim("roles", usuario.getRoles().stream().map(Rol::getNombre).collect(Collectors.toList()))
 						.sign(algorithm);//Crea un nuevo JWT y firma con el algoritmo dado
 				Map<String, String> tokens  = new HashMap<>();
-				
 				//Pasamos los token al body
 				tokens.put("accessToken", accessToken);
-				tokens.put("refreshToken", refreshToken);
+				//tokens.put("refreshToken", refreshToken);
 				response.setStatus(200);
 				response.setContentType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE);
 				new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 			} catch (Exception e) {
+				System.out.println("Error pero dentro del servicio");
 				response.setHeader("error", e.getMessage());
 				response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
 				Map<String, String> error  = new HashMap<>();
