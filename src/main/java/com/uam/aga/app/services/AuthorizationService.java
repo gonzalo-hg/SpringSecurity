@@ -55,7 +55,7 @@ public class AuthorizationService {
 				Map<String, String> tokens  = new HashMap<>();
 				//Pasamos los token al body
 				tokens.put("accessToken", accessToken);
-				tokens.put("refreshToken", refreshToken);
+				//tokens.put("refreshToken", refreshToken);
 				response.setStatus(200);
 				response.setContentType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE);
 				new ObjectMapper().writeValue(response.getOutputStream(), tokens);

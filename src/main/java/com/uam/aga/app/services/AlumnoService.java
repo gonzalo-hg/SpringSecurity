@@ -190,5 +190,38 @@ public class AlumnoService {
 		}
 		
 	}*/
+	
+	/**
+	 * Consulta para saber si la BD de Mongo contiene almenos un registro
+	 * @returnRegresa una lista de alumnos con máximo dos régistros
+	 */
+	public boolean findAnyAlumnos(){
+		Query query = new Query();
+		//List<Alumno> alumno = mongoTemplate.count(null,Alumno.class);
+		long alumno = mongoTemplate.count(query, Alumno.class);
+		if(alumno<=0) {
+			System.out.println("false");
+			return false;
+		}
+		else {
+			System.out.println("true");
+			return true;
+		
+		}
+	}	
+	
+	/**
+	 * Consulta para regresar a los alumnos inscritos en el trimestre, es decir, que su estado es activo (EDO="1")
+	 * @return Regresa una lista de alumnos con los atributos matricula, PLA=plan, Edad, PATE=apellido paterno, MATE= apellido materno, EDO=estado y SEXO
+	 */
+	public List<Alumno> findActiveAlumnos() {
+		System.out.println("mongotemplate"+mongoTemplate);
+		Query query = new Query();
+		query.addCriteria(new Criteria().andOperator(
+				Criteria.where("EDO").is("1")));
+		query.fields().include("matricula","NOM","PATE","MATE","EDAD","PLA","EDO","SEXO"); 
+		List<Alumno> alumno = mongoTemplate.find(query,Alumno.class);
+		return alumno;
+	}
 
 }

@@ -58,11 +58,11 @@ public class AlumnoRestController {
 	/**
 	 * Endpoint para realizar una petición GET
 	 * @return Una lista con todos los alumnos existentes
-	 */
+	 
 	@GetMapping("/alumnos")
 	public List<Alumno> mostrarProductos(){
 		return alumnoService.findAll();	
-	}	
+	}	*/
 	
 	/**
 	 * Endpoint para realizar una petición GET
@@ -151,6 +151,28 @@ public class AlumnoRestController {
 		alumnoService.cambiaNombreFotos();
 		//return alumnoRepository.findByMAT(matricula);
 	}
+	
 	*/
+	
+	/**
+	 * Endpoint para realizar una petición GET 
+	 * @return Regresa una lista con el nombre, apellido paterno, apellido materno, estado, plan y sexo de los alumnos inscritos en el trimestre.
+	 */
+	@GetMapping(path="/alumnos/inscritos", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Alumno>> findActiveAlumnos() {
+		
+		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.findActiveAlumnos());
+		
+	}
+	/**
+	 * Endpoint para realizar una petición GET
+	 * @return Una lista con dos alumnos existentes
+	 */
+	@GetMapping(path="/alumnos",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> comprobandoBD(){
+		//System.out.println(new ResponseTransfer("La respuesta es:"+alumnoService.isDBEmpty());
+		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.findAnyAlumnos());	
+	}	
+
 	
 }
