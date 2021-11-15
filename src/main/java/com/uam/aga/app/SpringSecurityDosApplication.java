@@ -28,7 +28,7 @@ public class SpringSecurityDosApplication {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
+	/*@Bean
 	CommandLineRunner run(UsuarioService usuarioService) {
 		return args ->{
 			usuarioService.saveRole(new Rol("admin"));
@@ -45,7 +45,7 @@ public class SpringSecurityDosApplication {
 			usuarioService.addRolUsuario("anton1", "user");
 
 		};
-	}
+	}*/
 	
 
 
