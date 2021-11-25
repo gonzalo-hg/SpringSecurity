@@ -143,7 +143,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 			AuthenticationException failed) throws IOException, ServletException {
 
 		Map<String, Object> body = new HashMap<String, Object>();
-		body.put("mensaje", "Error de autenticación: username o password incorrecto!");
+		body.put("mensaje", "Error de autenticación: username o password incorrecto");
 		body.put("error", failed.getMessage());
 		
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
