@@ -31,7 +31,7 @@ class AlumnoServiceTest {
 
 
 
-    @BeforeEach
+    /*@BeforeEach
     void setUp(){
         alumno = new Alumno();
         alumno.setMAT("2153045340");
@@ -48,5 +48,5 @@ class AlumnoServiceTest {
                 (Alumno) Arrays.asList(alumno)
         );
         assertNotNull(alumnoService.findById("2153045340"));
-    }
+    }*/
 }

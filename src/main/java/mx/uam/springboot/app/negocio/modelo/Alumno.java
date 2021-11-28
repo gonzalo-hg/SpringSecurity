@@ -8,9 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 
-
 @Data
-
 @Document(collection = "Alumnos")
 public class Alumno implements Serializable{
 

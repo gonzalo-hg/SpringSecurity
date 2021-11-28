@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  *
  */
 @Document(collection = "Usuarios")
-@Data 
+@Data
 
 /**
  * Definimos un constructor sin argumetos

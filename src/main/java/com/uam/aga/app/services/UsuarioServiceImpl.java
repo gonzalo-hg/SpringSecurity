@@ -6,6 +6,11 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +40,9 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	
 	@Autowired 
 	private  PasswordEncoder passwordEnconder; //La usamos para codificar la contraseña
+	
+	
+	private Usuario usuario;
 	
 	
 	/**
@@ -71,11 +79,12 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	@Override
 	public void addRolUsuario(String username, String rolName) {
 		log.info("Agregando un role {} al usuario {} en la BD", rolName, username);
-		Usuario usuario = usuarioRepository.findByUsername(username);
+		 usuario = usuarioRepository.findByUsername(username);
 		Rol role = roleRepository.findByNombre(rolName);
 		usuario.getRoles().add(role);
-	}
-
+		usuarioRepository.save(usuario);
+ 	}
+ 
 	/**
 	 * Metodo que siver para buscar un usuario
 	 * por medio de su username 
@@ -108,8 +117,8 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario = usuarioRepository.findByUsername(username);
 		if(usuario == null) {
-			log.error("USuario no encontado en la bd");
-			throw new UsernameNotFoundException("USuario no encontado en la bd");
+			log.error("USuario no encontrado en la bd");
+			throw new UsernameNotFoundException("Usuario no encontrado en la bd");
 		}
 		else {
 			log.info("USuario  encontado en la bd: {}", usuario);

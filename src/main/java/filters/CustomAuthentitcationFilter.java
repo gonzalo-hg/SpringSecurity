@@ -122,6 +122,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 				.sign(algorithm);
 		Map<String, String> tokens  = new HashMap<>();
 		response.setHeader("access_token", accessToken);//Se pasa como un header
+		logger.info(accessToken);
 		//response.setHeader("refresh_token", refreshToken);//se pasa como un header
 		response.setHeader("nombreUsuario", usuario.getUsername());
 		//Pasamos los token al body
