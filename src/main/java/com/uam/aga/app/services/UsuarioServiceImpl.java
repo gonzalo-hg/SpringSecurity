@@ -55,7 +55,8 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	public Usuario saveUsuario(Usuario usuario){
 		log.info("Se guardo un usuario {} en la BD",usuario.getNombre());
 		usuario.setPassword(passwordEnconder.encode(usuario.getPassword()));
-		
+		usuario.setApellidoP(usuario.getApellidoP());
+		usuario.setApellidoM(usuario.getApellidoM());
 		return usuarioRepository.save(usuario);
 	}
 	

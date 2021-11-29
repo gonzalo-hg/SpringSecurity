@@ -38,7 +38,7 @@ public class SpringSecurityDosApplication {
 			//usuarioService.saveUsuario(new Usuario(null, "gonzalo", "zalo1", "1234", new ArrayList<>()));
 			//usuarioService.saveUsuario(new Usuario(null, "ulises", "ulises1", "1234", new ArrayList<>()));
 			//usuarioService.saveUsuario(new Usuario(null, "antonio", "anton1", "5874", new ArrayList<>()));
-			
+			//usuarioService.saveUsuario(new Usuario(null, "prueba","pruebaP","pruebaM", "prueba1@gmail.com", "1234", new ArrayList<>()));
 			//usuarioService.addRolUsuario("zalo1", "admin");
 			//usuarioService.addRolUsuario("zalo1", "user");
 			//usuarioService.addRolUsuario("ulises1", "admin");

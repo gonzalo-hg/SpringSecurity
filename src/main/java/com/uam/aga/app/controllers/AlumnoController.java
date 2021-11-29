@@ -1,12 +1,14 @@
-package mx.uam.springboot.app.presentacion.serviciosRest;
+package com.uam.aga.app.controllers;
 
 
 import java.lang.reflect.Field;
+import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uam.aga.app.services.AlumnoService;
@@ -23,9 +26,9 @@ import com.uam.aga.app.services.AlumnoService;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 import mx.uam.springboot.app.negocio.modelo.dto.AlumnoDto;
 
-@RestController()
+@RestController
 @RequestMapping("/api")
-public class AlumnoRestController {
+public class AlumnoController {
 	
 	@Autowired
 	private AlumnoService alumnoService;
@@ -168,9 +171,10 @@ public class AlumnoRestController {
 	 * Endpoint para realizar una petición GET
 	 * @return Una lista con dos alumnos existentes
 	 */
-	@GetMapping(path="/alumnos",produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="/alumnos/verifica",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> comprobandoBD(){
-		//System.out.println(new ResponseTransfer("La respuesta es:"+alumnoService.isDBEmpty());
+		//System.out.println(new ResponseTransfer("La respuesta es:"+alumnoService.isDBEmpty())
+		System.out.println("Entra al comprobandoBD");
 		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.findAnyAlumnos());	
 	}	
 
