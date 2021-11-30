@@ -66,7 +66,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 					
 					
 					Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-					System.out.println("Roles: "+ authorities.stream());
+					System.out.println("Roles: "+ authorities.toString());
 					Arrays.stream(roles).forEach(rol -> {
 						authorities.add(new SimpleGrantedAuthority(rol));
 						System.out.println("Roles: "+ rol);

@@ -38,7 +38,7 @@ public class UsuarioController {
 	private AlumnoService alumnoService;
 	
 	@Autowired
-	private AuthorizationService authorizationService;
+	// AuthorizationService authorizationService;
 	
 	/**
 	 * Meotodo que devuelve una lista de usuarios mediante 
@@ -46,12 +46,14 @@ public class UsuarioController {
 	 */
 	@GetMapping("/usuario")
 	public ResponseEntity<List<Usuario>>getUsuarios(){
+		System.out.println("Response: "+ResponseEntity.ok().body(usuarioService.getUsuarios()));
 		return ResponseEntity.ok().body(usuarioService.getUsuarios());
 	}
 	
 	@PostMapping("/usuario/guardar")
 	public ResponseEntity<Usuario>guardarUsuario( @RequestBody Usuario usuario){
 		URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/usuario/guardar").toString());
+		System.out.println(ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario)));
 		return ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario));
 	}
 	
@@ -72,10 +74,10 @@ public class UsuarioController {
 		return alumnoService.consultaAlumno();
 	}
 	
-	@GetMapping("/token/refresh")
-	public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws JsonGenerationException, JsonMappingException, IOException{
-		authorizationService.refreshauthorizationToken(request, response);
-	}
+	//@GetMapping("/token/refresh")
+	//public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws JsonGenerationException, JsonMappingException, IOException{
+		//authorizationService.refreshauthorizationToken(request, response);
+//	}
 	
 }
 

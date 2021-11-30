@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  *
  */
 @Document(collection = "Usuarios")
-@Data 
+@Data
 
 /**
  * Definimos un constructor sin argumetos
@@ -34,6 +34,10 @@ public class Usuario {
 	@Id
 	private String id;
 	private String nombre;
+	private String apellidoP;
+	private String apellidoM;
+	
+	//Es el correo electronico
 	private String username;
 	private String password;
 	

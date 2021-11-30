@@ -9,7 +9,8 @@ import com.uam.aga.app.models.Usuario;
  * @author gonzalo
  *
  */
-public interface UsuarioRepository extends MongoRepository<Usuario, String>{
+public interface UsuarioRepository extends  MongoRepository<Usuario, String>{
 
 	public Usuario  findByUsername(String username);
+	
 }

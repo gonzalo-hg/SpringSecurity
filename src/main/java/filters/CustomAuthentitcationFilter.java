@@ -122,6 +122,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 				.sign(algorithm);
 		Map<String, String> tokens  = new HashMap<>();
 		response.setHeader("access_token", accessToken);//Se pasa como un header
+		logger.info(accessToken);
 		//response.setHeader("refresh_token", refreshToken);//se pasa como un header
 		response.setHeader("nombreUsuario", usuario.getUsername());
 		//Pasamos los token al body
@@ -143,7 +144,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 			AuthenticationException failed) throws IOException, ServletException {
 
 		Map<String, Object> body = new HashMap<String, Object>();
-		body.put("mensaje", "Error de autenticación: username o password incorrecto!");
+		body.put("mensaje", "Error de autenticación: username o password incorrecto");
 		body.put("error", failed.getMessage());
 		
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));

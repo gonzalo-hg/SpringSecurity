@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.uam.aga.app.models.Rol;
 import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.services.UsuarioService;
+import com.uam.aga.app.services.UsuarioServiceImpl;
 
 @SpringBootApplication
 public class SpringSecurityDosApplication {
@@ -29,21 +30,19 @@ public class SpringSecurityDosApplication {
 	}
 	
 	@Bean
-	CommandLineRunner run(UsuarioService usuarioService) {
+	CommandLineRunner run(UsuarioServiceImpl usuarioService) {
 		return args ->{
-			usuarioService.saveRole(new Rol("admin"));
-			usuarioService.saveRole(new Rol("user"));
+			//usuarioService.saveRole(new Rol("admin"));
+			//usuarioService.saveRole(new Rol("user"));
 			
-			usuarioService.saveUsuario(new Usuario(null, "gonzalo", "zalo1", "1234", new ArrayList<>()));
-			usuarioService.saveUsuario(new Usuario(null, "ulises", "ulises1", "1234", new ArrayList<>()));
-
-			usuarioService.addRolUsuario("zalo1", "admin");
-			usuarioService.addRolUsuario("zalo1", "user");
-			usuarioService.addRolUsuario("ulises1", "user");
-			
-			usuarioService.saveUsuario(new Usuario(null, "antonio", "anton1", "5874", new ArrayList<>()));
-			usuarioService.addRolUsuario("anton1", "user");
-
+			//usuarioService.saveUsuario(new Usuario(null, "gonzalo", "zalo1", "1234", new ArrayList<>()));
+			//usuarioService.saveUsuario(new Usuario(null, "ulises", "ulises1", "1234", new ArrayList<>()));
+			//usuarioService.saveUsuario(new Usuario(null, "antonio", "anton1", "5874", new ArrayList<>()));
+			//usuarioService.saveUsuario(new Usuario(null, "prueba","pruebaP","pruebaM", "prueba1@gmail.com", "1234", new ArrayList<>()));
+			//usuarioService.addRolUsuario("zalo1", "admin");
+			//usuarioService.addRolUsuario("zalo1", "user");
+			//usuarioService.addRolUsuario("ulises1", "admin");
+			//usuarioService.addRolUsuario("anton1", "admin");
 		};
 	}
 	

@@ -1,4 +1,5 @@
 package mx.uam.springboot.app.negocio.modelo.dto;
+
 import lombok.Data;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 

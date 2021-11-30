@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -41,6 +42,7 @@ public class AlumnoService {
 	 * @param matricula La matrícula del alumno a consultar
 	 * @return El alumno cuya MAT=matricula si existe, null en caso contrario
 	 */
+	@Secured({"user","admin"})
 	public Alumno findByMatricula(String matricula) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("MAT").is(matricula));
@@ -199,14 +201,14 @@ public class AlumnoService {
 		Query query = new Query();
 		//List<Alumno> alumno = mongoTemplate.count(null,Alumno.class);
 		long alumno = mongoTemplate.count(query, Alumno.class);
+		System.out.println("Alumno: " +alumno);
 		if(alumno<=0) {
 			System.out.println("false");
 			return false;
 		}
 		else {
 			System.out.println("true");
-			return true;
-		
+			return true;		
 		}
 	}	
 	
@@ -219,7 +221,7 @@ public class AlumnoService {
 		Query query = new Query();
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("EDO").is("1")));
-		query.fields().include("matricula","NOM","PATE","MATE","EDAD","PLA","EDO","SEXO"); 
+		query.fields().include("MAT","NOM","PATE","MATE","EDAD","PLA","EDO","SEXO"); 
 		List<Alumno> alumno = mongoTemplate.find(query,Alumno.class);
 		return alumno;
 	}
