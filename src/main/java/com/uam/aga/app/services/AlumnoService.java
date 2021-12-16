@@ -217,13 +217,26 @@ public class AlumnoService {
 	 * @return Regresa una lista de alumnos con los atributos matricula, PLA=plan, Edad, PATE=apellido paterno, MATE= apellido materno, EDO=estado y SEXO
 	 */
 	public List<Alumno> findActiveAlumnos() {
-		System.out.println("mongotemplate"+mongoTemplate);
 		Query query = new Query();
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("EDO").is("1")));
 		query.fields().include("MAT","NOM","PATE","MATE","EDAD","PLA","EDO","SEXO"); 
 		List<Alumno> alumno = mongoTemplate.find(query,Alumno.class);
 		return alumno;
+	}
+	
+	/**
+	 * Metodo para consultar la cantidad de alumnos conforme al plan de estudios y trimestre
+	 */
+	public int countStudentsActive(String trimestre, String plan) {
+		Query query = new Query();
+		query.addCriteria(new Criteria().andOperator(
+				Criteria.where("EDO").is("1"),
+				Criteria.where("UT_AA").is(trimestre),
+				Criteria.where("PLA").is(plan)
+				));
+		int cont = (int) mongoTemplate.count(query, Alumno.class);
+		return cont;
 	}
 
 }

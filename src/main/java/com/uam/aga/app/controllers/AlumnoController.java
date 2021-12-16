@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uam.aga.app.services.AlumnoService;
@@ -147,14 +148,12 @@ public class AlumnoController {
 	
 	/**
 	 * Metodo para renombrar las fotografias
-<<<<<<< HEAD
 	 * 
 	@GetMapping("/alumnos/fotos/cambio-nombre")
 	public void findByMatricula() {
 		alumnoService.cambiaNombreFotos();
 		//return alumnoRepository.findByMAT(matricula);
 	}
-	
 	*/
 	
 	/**
@@ -173,10 +172,13 @@ public class AlumnoController {
 	 */
 	@GetMapping(path="/alumnos/verifica",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> comprobandoBD(){
-		//System.out.println(new ResponseTransfer("La respuesta es:"+alumnoService.isDBEmpty())
-		System.out.println("Entra al comprobandoBD");
 		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.findAnyAlumnos());	
 	}	
-
+	
+	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<Integer> cuentaNuevoIngreso(@RequestParam (value ="trimestre")  String trimestre,
+			@RequestParam (value = "plan")  String plan){
+		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.countStudentsActive(trimestre, plan));
+	}
 	
 }

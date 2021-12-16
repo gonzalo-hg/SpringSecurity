@@ -63,8 +63,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 					String username = decodedJWT.getSubject();
 					//Decodificamos los roles del uruarios, se extrae como un array
 					String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
-					
-					
 					Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 					System.out.println("Roles: "+ authorities.toString());
 					Arrays.stream(roles).forEach(rol -> {
