@@ -26,6 +26,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uam.aga.app.models.Usuario;
+import com.uam.aga.app.services.UsuarioService;
+import com.uam.aga.app.services.UsuarioServiceImpl;
 
 
 public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationFilter{
@@ -33,6 +35,9 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	@Autowired
 	private  AuthenticationManager authenticationManager;
 	
+	@Autowired
+	private UsuarioServiceImpl usuarioService;
+
 	/**
 	 * Contructor para crear la autenticacion
 	 * @param authenticationManager
@@ -54,7 +59,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		if(username != null && password !=null) {
 			logger.info("Username desde request parameter (form-data): " + username);
 			logger.info("Password desde request parameter (form-data): " + password);
-			
+				
 			
 		} else {
 			Usuario user = null;
@@ -68,6 +73,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 				
 				logger.info("Username desde request InputStream (raw): " + username);
 				logger.info("Password desde request InputStream (raw): " + password);
+
 				
 			} catch (JsonParseException e) {
 				e.printStackTrace();
@@ -107,24 +113,33 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());//Esto debe ponerse en otro lado
 								//Mezcla el secreo con datos del mensaje y hace esto por setunda vez
 		//public static final String SECRET = Base64Utils.encodeToString("Alguna.Clave.Secreta.123456".getBytes()); ejemplo de una palabra secreta
-
+	
+		Map<String, String> sss =  new HashMap<>();
+		sss.put("nombre", "uuuu");
 		String accessToken = JWT.create()
 				//pasamos el nombre del usuario en una cedena
 				.withSubject(usuario.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
 				.withIssuer(request.getRequestURL().toString())
 				.withClaim("roles", usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+				.withPayload(sss)
 				.sign(algorithm);//Crea un nuevo JWT y firma con el algoritmo dado
+		
+		String nomnbreU = usuario.getUsername();
+		//usuarioService.getUsuario(nomnbreU);
+		System.out.println("Nombreeeee: " + nomnbreU);
 		String refreshToken = JWT.create()
 				.withSubject(usuario.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() +30*60*1000))
 				.withIssuer(request.getRequestURL().toString())
 				.sign(algorithm);
+		String nombre = "Hola";
 		Map<String, String> tokens  = new HashMap<>();
 		response.setHeader("access_token", accessToken);//Se pasa como un header
 		logger.info(accessToken);
 		//response.setHeader("refresh_token", refreshToken);//se pasa como un header
 		response.setHeader("nombreUsuario", usuario.getUsername());
+		response.setHeader("nombre",nombre);
 		//Pasamos los token al body
 		tokens.put("accessToken", accessToken);
 		//tokens.put("refreshToken", refreshToken);
