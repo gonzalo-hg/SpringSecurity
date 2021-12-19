@@ -226,17 +226,28 @@ public class AlumnoService {
 	}
 	
 	/**
-	 * Metodo para consultar la cantidad de alumnos conforme al plan de estudios y trimestre
+	 * Metodo para consultar la cantidad de alumnos conforme al plan de estudios y trimestres del 20I, 20P, 20O
 	 */
-	public int countStudentsActive(String trimestre, String plan) {
+	public int countStudentsActiveByAING(String anioIngreso, String plan) {
 		Query query = new Query();
 		query.addCriteria(new Criteria().andOperator(
-				Criteria.where("EDO").is("1"),
-				Criteria.where("UT_AA").is(trimestre),
+				Criteria.where("AING").is(anioIngreso),
 				Criteria.where("PLA").is(plan)
 				));
 		int cont = (int) mongoTemplate.count(query, Alumno.class);
 		return cont;
 	}
-
+	
+	/**
+	 * Metodo para consultar la cantidad de alumnos conforme al plan de estudios y trimestres del 20I, 20P, 20O
+	 */
+	public int countStudentsActiveByTRII(String trimIngreso, String plan) {
+		Query query = new Query();
+		query.addCriteria(new Criteria().andOperator(
+				Criteria.where("TRII").is(trimIngreso),
+				Criteria.where("PLA").is(plan)
+				));
+		int cont = (int) mongoTemplate.count(query, Alumno.class);
+		return cont;
+	}
 }

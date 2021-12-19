@@ -26,6 +26,7 @@ import com.uam.aga.app.services.AlumnoService;
 
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 import mx.uam.springboot.app.negocio.modelo.dto.AlumnoDto;
+import mx.uam.springboot.app.negocio.modelo.dto.Cuadro22DTO;
 
 @RestController
 @RequestMapping("/api")
@@ -175,10 +176,26 @@ public class AlumnoController {
 		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.findAnyAlumnos());	
 	}	
 	
-	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso", produces=MediaType.APPLICATION_JSON_VALUE)
-	public  ResponseEntity<Integer> cuentaNuevoIngreso(@RequestParam (value ="trimestre")  String trimestre,
+	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso-aing", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<Integer> countStudentsActiveByAING(@RequestParam (value ="anioIngreso")  String anioIngreso,
 			@RequestParam (value = "plan")  String plan){
-		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.countStudentsActive(trimestre, plan));
+		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.countStudentsActiveByAING(anioIngreso, plan));
 	}
+	
+	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso-trii", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<Cuadro22DTO> countStudentsActiveByTRII(
+			@RequestParam (value ="trimI")  String trimI,
+			@RequestParam (value ="trimP")  String trimP,
+			@RequestParam (value ="trimO")  String trimO,
+			@RequestParam (value = "plan")  String plan,
+			@RequestParam (value = "anioIngreso")  String anioIngreso){
+		Cuadro22DTO cuadro22 = new Cuadro22DTO();
+		cuadro22.setTrimI(alumnoService.countStudentsActiveByTRII(trimI, plan));
+		cuadro22.setTrimP(alumnoService.countStudentsActiveByTRII(trimP, plan));
+		cuadro22.setTrimO(alumnoService.countStudentsActiveByTRII(trimO, plan));
+		cuadro22.setTotal(alumnoService.countStudentsActiveByAING(anioIngreso, plan));
+		return ResponseEntity.status(HttpStatus.OK).body(cuadro22);
+	}
+	
 	
 }
