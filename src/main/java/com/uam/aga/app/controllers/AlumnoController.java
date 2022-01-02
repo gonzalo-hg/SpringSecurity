@@ -2,13 +2,11 @@ package com.uam.aga.app.controllers;
 
 
 import java.lang.reflect.Field;
-import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,16 +56,7 @@ public class AlumnoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(alumnoService.findByMatricula(matricula));
 		//return alumnoRepository.findByMAT(matricula);
 	}
-	
-	/**
-	 * Endpoint para realizar una petición GET
-	 * @return Una lista con todos los alumnos existentes
-	 
-	@GetMapping("/alumnos")
-	public List<Alumno> mostrarProductos(){
-		return alumnoService.findAll();	
-	}	*/
-	
+
 	/**
 	 * Endpoint para realizar una petición GET
 	 * @param plan El plan de estudios de los alumnos a consultar
@@ -79,15 +67,6 @@ public class AlumnoController {
 	public List<AlumnoDto> findByPlanAndTrimestre(@PathVariable String plan, @PathVariable String trimestre){
 		return alumnoService.findByPlanAndTrimestre(plan, trimestre);
 	} 
-	
-	/*
-	@GetMapping(path = "/hotels/{hotelCode}/prices", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResultListDto <HotelPrices>> retrievePrices(@PathVariable(
-			"hotelCode") String hotelCode,
-			@ApiParam(name = "startDate", value = "Date yyyy-mm-dd", defaultValue = "2020-01-01", required=true)
-			@RequestParam(required = true) String startDate,
-			@ApiParam(name = "endDate", value = "Date yyyy-mm-dd", defaultValue = "2020-01-01", required=false)
-			@RequestParam(required = fa*/
 	
 	/**
 	 * Endpoint para realizar una petición GET
@@ -101,9 +80,6 @@ public class AlumnoController {
 			@PathVariable final String sexo,@PathVariable final String trimestre){
 				return alumnoService.findByPlanAndSexoAndTrimestre(plan,sexo,trimestre);
 	}
-
-	
-	//PETICIONES POST
 
 	/**
 	 * Metodo para agregar alumnos a la BD
@@ -142,10 +118,6 @@ public class AlumnoController {
 			}
 		}
 	}
-	
-	
-	
-	//OTROS
 	
 	/**
 	 * Metodo para renombrar las fotografias
@@ -189,13 +161,12 @@ public class AlumnoController {
 			@RequestParam (value ="trimO")  String trimO,
 			@RequestParam (value = "plan")  String plan,
 			@RequestParam (value = "anioIngreso")  String anioIngreso){
-		Cuadro22DTO cuadro22 = new Cuadro22DTO();
+		Cuadro22DTO cuadro22 = new Cuadro22DTO(); 
 		cuadro22.setTrimI(alumnoService.countStudentsActiveByTRII(trimI, plan));
 		cuadro22.setTrimP(alumnoService.countStudentsActiveByTRII(trimP, plan));
 		cuadro22.setTrimO(alumnoService.countStudentsActiveByTRII(trimO, plan));
 		cuadro22.setTotal(alumnoService.countStudentsActiveByAING(anioIngreso, plan));
 		return ResponseEntity.status(HttpStatus.OK).body(cuadro22);
 	}
-	
 	
 }

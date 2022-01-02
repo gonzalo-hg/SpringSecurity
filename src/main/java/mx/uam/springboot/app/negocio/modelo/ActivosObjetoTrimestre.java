@@ -1,20 +1,10 @@
 package mx.uam.springboot.app.negocio.modelo;
 
-
-import java.io.Serializable;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Data;
 
 @Data
-@Document(collection = "Alumnos")
-public class Alumno implements Serializable{
+public class ActivosObjetoTrimestre {
 
-	@Id
-	private String id;
-	
 	private String matricula; 
 	private String UNI;
 	private String DIV;
@@ -50,7 +40,7 @@ public class Alumno implements Serializable{
 	private String OTRA_CAL;
 	private String NTRI;
 	private String NTRC;
-	private String ESC; //"ESC": "2",
+	private String ESC; 
 	private String PROM;
 	private String FNA;
 	private long EDAD;
@@ -90,10 +80,4 @@ public class Alumno implements Serializable{
 	private String PORCENTAJE;
 	private String FECHA_TITU;
 	private String TRI_TITULA;
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
 }

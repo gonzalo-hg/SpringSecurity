@@ -22,11 +22,7 @@ public class AlumnoService {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
-	
 
-	//METODOS GET
-	
-	
 	/**
 	 * Consulta a un alumno por id
 	 * @param alumnoId El id asignado en la BD
@@ -45,8 +41,8 @@ public class AlumnoService {
 	@Secured({"user","admin"})
 	public Alumno findByMatricula(String matricula) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("MAT").is(matricula));
-		query.fields().include("MAT","PATE","MATE","NOM");
+		query.addCriteria(Criteria.where("matricula").is(matricula));
+		query.fields().include("matricula","PATE","MATE","NOM");
 		Alumno alumonosConsulta =  mongoTemplate.findOne(query,Alumno.class);
 		return alumonosConsulta;
 	}
@@ -67,7 +63,7 @@ public class AlumnoService {
 	public List<Alumno> findByPlan(String plan) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("PLA").is(plan));
-		query.fields().include("NOM","PLA","MAT","PATE","MATE");
+		query.fields().include("NOM","PLA","matricula","PATE","MATE");
 		List<Alumno> alumonosCoincidentes = mongoTemplate.find(query,Alumno.class);
 		return alumonosCoincidentes;
 	}
@@ -83,7 +79,7 @@ public class AlumnoService {
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("PLA").is(plan),
 				Criteria.where("UT_RE").is(trimestre)));
-		query.fields().include("MAT","PLA","EDAD","PATE","MATE","NOM");
+		query.fields().include("matricula","PLA","EDAD","PATE","MATE","NOM");
 		//query.fields().elemMatch(plan,  Criteria.where("online").is(true));
 		List<AlumnoDto> alumnosConsulta = new ArrayList<AlumnoDto>();
 		
@@ -103,22 +99,16 @@ public class AlumnoService {
 	 */
 	public List<Alumno> findByPlanAndSexoAndTrimestre(long plan,String sexo,String trimestre) {
 		Query query = new Query();
-		//query.addCriteria(Criteria.where("PLA").is(plan).and("SEXO").is(sexo));
-		//query = BasicQuery.query(Criteria.where("PLA").is(plan).and("SEXO").is(sexo));
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("PLA").is(plan),
 				Criteria.where("SEXO").is(sexo),
 				Criteria.where("UT_RE").is(trimestre)
 				));
-		//Query query = new BasicQuery("{$and: [{'SEXO': 'M'},{'PLA':'52'}]}");
-		query.fields().include("MAT","PLA","EDAD","PATE","MATE","NOM","SEXO");
+		query.fields().include("matricula","PLA","EDAD","PATE","MATE","NOM","SEXO");
 		List<Alumno> alumonosCoincidentes = mongoTemplate.find(query,Alumno.class);
 		System.out.println("Tamaño de la consulta: " + alumonosCoincidentes.size());
 		return alumonosCoincidentes;
 	}
-	
-	
-	//METODOS POST
 	
 	/**
 	 * Guarda en la BD a los alumnos recibidos como parámetro
@@ -220,7 +210,7 @@ public class AlumnoService {
 		Query query = new Query();
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("EDO").is("1")));
-		query.fields().include("MAT","NOM","PATE","MATE","EDAD","PLA","EDO","SEXO"); 
+		query.fields().include("matricula","NOM","PATE","MATE","EDAD","PLA","EDO","SEXO"); 
 		List<Alumno> alumno = mongoTemplate.find(query,Alumno.class);
 		return alumno;
 	}
@@ -247,7 +237,9 @@ public class AlumnoService {
 				Criteria.where("TRII").is(trimIngreso),
 				Criteria.where("PLA").is(plan)
 				));
+		System.out.println(query);
 		int cont = (int) mongoTemplate.count(query, Alumno.class);
 		return cont;
 	}
+	
 }

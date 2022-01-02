@@ -18,7 +18,7 @@ public class AlumnoDto {
 	
 	public static AlumnoDto creaDto(Alumno alumno) {
 		AlumnoDto dto = new AlumnoDto();
-		dto.setMatricula(alumno.getMAT());
+		dto.setMatricula(alumno.getMatricula());
 		dto.setPlan(alumno.getPLA());
 		dto.setEdad(alumno.getEDAD());
 		dto.setNombre(alumno.getNOM());

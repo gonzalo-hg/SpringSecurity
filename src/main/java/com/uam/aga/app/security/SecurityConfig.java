@@ -14,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.uam.aga.app.services.AlumnoService;
-
 import filters.CustomAuthentitcationFilter;
 import filters.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private  UserDetailsService userDetailsService;
 	
-	@Autowired
-	private AlumnoService alumnoService;
-	
-	
 	/**
 	 * En este metodo anulamos el configure por default. Crea los usuarios y 
 	 * el passwordEnconder sirve para codificar la contraseña
@@ -73,15 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		//http.authorizeRequests().antMatchers("/","/css/**","/js/**").permitAll();
+		http.authorizeRequests().antMatchers("/","/css/**","/js/**").permitAll();
 		http.authorizeRequests().antMatchers("/api/login/**","/api/token/refresh/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/usuario/**").hasAnyAuthority("user");
-		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/solo").hasAnyAuthority("admin");
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/**").hasAnyAuthority("admin");
-		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/verifica").hasAuthority("admin");
-		//http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/alumnos/**").hasAnyAuthority("user");
-		//http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/usuario/guardar/**").hasAnyAuthority("admin");
-		
 		//http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(customAuthentitcationFilter);
 		http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
