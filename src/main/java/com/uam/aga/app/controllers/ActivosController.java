@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uam.aga.app.services.ActivosService;
 
+import mx.uam.springboot.app.negocio.modelo.dto.Cuadro22DTO;
+
 @RestController
 @RequestMapping("/api")
 public class ActivosController {
@@ -28,5 +30,30 @@ public class ActivosController {
 			@RequestParam (value="edo") String edo) {
 		return ResponseEntity.status(HttpStatus.OK).body(activosService.currentStudents(plan, trimestre, edo));
 	}
+	
+	/**
+	 * Metodo para contar los alumnos por trimestre y año . 
+	 */
+	/*@GetMapping(path="/alumnos/reporte-cuenta/alumnos-activos-tri",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> currentStudentsTri(
+			@RequestParam (value="plan") String plan,
+			@RequestParam (value="trimestre") String trimestre,
+			@RequestParam (value="edo") String edo) {
+		return ResponseEntity.status(HttpStatus.OK).body(activosService.currentStudentsTri(plan, trimestre, edo));
+	}*/
 
+	@GetMapping(path = "/alumnos/reporte-cuenta/alumnos-activos-trii", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<Cuadro22DTO> countCurrentStudentsByTRII(
+			@RequestParam (value ="trimI")  String trimI,
+			@RequestParam (value ="trimP")  String trimP,
+			@RequestParam (value ="trimO")  String trimO,
+			@RequestParam (value = "plan")  String plan,
+			@RequestParam (value = "edo")  String edo){
+		Cuadro22DTO cuadro22 = new Cuadro22DTO(); 
+		cuadro22.setTrimI(activosService.currentStudentsTri(plan, trimI,edo));
+		cuadro22.setTrimP(activosService.currentStudentsTri(plan, trimP,edo));
+		cuadro22.setTrimO(activosService.currentStudentsTri(plan, trimO,edo));
+		cuadro22.setTotal(activosService.currentStudents(plan, trimO,edo));
+		return ResponseEntity.status(HttpStatus.OK).body(cuadro22); 
+	}
 }

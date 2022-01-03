@@ -24,53 +24,24 @@ public class ActivosService {
 	 * y el plan de estudios.
 	 * 
 	 */
-	/*public int currentStudents(String plan, String trimestreAcutal,String anio) {
-		Query query = new Query();
-		query.addCriteria(
-				Criteria.where(trimestreAcutal+".PLA").is(plan));
-		System.out.println(query);
-		int cont = (int) mongoTemplate.count(query, Alumno.class);
-		return cont;
-	}*/
-	
-	/**
-	 * Metodo para poder contar los alumnos activos de un trimestre actual
-	 * y el plan de estudios.
-	 * 
-	 */
-	/*public int currentStudents(String ultimoTri_resinscrito, String plan,String edo) {
-		Query query = new Query();
-		query.addCriteria(new Criteria().andOperator(
-				Criteria.where("UT_RE").is(ultimoTri_resinscrito),
-				Criteria.where("PLA").is(plan),
-				Criteria.where("EDO").is(edo)));
-		System.out.println(query);
-		int cont = (int) mongoTemplate.count(query, Alumno.class);
-		return cont;
-	}*/
-	
-	/**
-	 * Metodo para poder contar los alumnos activos de un trimestre actual
-	 * y el plan de estudios.
-	 * 
-	 */
 	public int currentStudents(String plan, String trimestre,String estado) {
+		
 		Query query = new Query();
 		Query query1 = new Query();
 		Query query2 = new Query();
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("PLA").is(plan),
-				Criteria.where("UT_AA").is(trimestre+"I"),
+				Criteria.where("UT_RE").is(trimestre+"I"),
 				Criteria.where("EDO").is(estado)));
 		
 		query1.addCriteria(new Criteria().andOperator(
 				Criteria.where("PLA").is(plan),
-				Criteria.where("UT_AA").is(trimestre+"P"),
+				Criteria.where("UT_RE").is(trimestre+"P"),
 				Criteria.where("EDO").is(estado)));
 		
 		query2.addCriteria(new Criteria().andOperator(
 				Criteria.where("PLA").is(plan),
-				Criteria.where("UT_AA").is(trimestre+"O"),
+				Criteria.where("UT_RE").is(trimestre+"O"),
 				Criteria.where("EDO").is(estado)));
 		
 		int cont = (int) mongoTemplate.count(query, Alumno.class);
@@ -78,5 +49,21 @@ public class ActivosService {
 		int cont2 = (int) mongoTemplate.count(query2, Alumno.class);
 		int suma = cont+cont1+cont2;
 		return suma;
+	}
+	
+	/**
+	 * Metodo para poder contar los alumnos activos por trimestre
+	 * y el plan de estudios.
+	 * 
+	 */
+	public int currentStudentsTri(String plan, String trimestre,String estado) {
+		Query query = new Query();
+		query.addCriteria(new Criteria().andOperator(
+				Criteria.where("PLA").is(plan),
+				Criteria.where("UT_RE").is(trimestre),
+				Criteria.where("EDO").is(estado)));
+
+		int cont = (int) mongoTemplate.count(query, Alumno.class);
+		return cont;
 	}
 }
