@@ -90,6 +90,7 @@ public class Alumno implements Serializable{
 	private String PORCENTAJE;
 	private String FECHA_TITU;
 	private String TRI_TITULA;
+	private String CORREO_E;
 	
 	/**
 	 * 

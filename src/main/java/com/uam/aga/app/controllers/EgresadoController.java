@@ -1,5 +1,7 @@
 package com.uam.aga.app.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,8 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uam.aga.app.services.EgresadoService;
 
+import mx.uam.springboot.app.negocio.modelo.Egresado;
 import mx.uam.springboot.app.negocio.modelo.dto.Cuadro22DTO;
-
+/**
+ * 
+ * @author Gonzalo Hernandez
+ *
+ */
 @RestController
 @RequestMapping("/api")
 public class EgresadoController {
@@ -40,5 +47,12 @@ public class EgresadoController {
 		cuadro22.setTrimO(egresadoService.countGraduatedTri(trimO,alumnoPlan));
 		cuadro22.setTotal(egresadoService.countGraduated(trimestre,alumnoPlan));
 		return ResponseEntity.status(HttpStatus.OK).body(cuadro22); 
+	}
+	
+	@GetMapping(path="/alumnos/reporte-cuenta/egresados-datos",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Egresado>> GraduatedDataTri(
+			@RequestParam (value="trimestre") String trimestre,
+			@RequestParam (value="alumnoPlan") String plan) {
+		return ResponseEntity.status(HttpStatus.OK).body(egresadoService.graduatedData(trimestre, plan));
 	}
 }
