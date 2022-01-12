@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import mx.uam.springboot.app.negocio.modelo.Activos;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 
 /**
@@ -59,11 +60,11 @@ public class ActivosService {
 	public int currentStudentsTri(String plan, String trimestre,String estado) {
 		Query query = new Query();
 		query.addCriteria(new Criteria().andOperator(
-				Criteria.where("PLA").is(plan),
-				Criteria.where("UT_RE").is(trimestre),
-				Criteria.where("EDO").is(estado)));
+				Criteria.where("alumno.PLA").is(plan),
+				Criteria.where("trimestre").is(trimestre),
+				Criteria.where("alumno.EDO").is(estado)));
 
-		int cont = (int) mongoTemplate.count(query, Alumno.class);
+		int cont = (int) mongoTemplate.count(query, Activos.class);
 		return cont;
 	}
 }
