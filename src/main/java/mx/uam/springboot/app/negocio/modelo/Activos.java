@@ -20,7 +20,7 @@ public class Activos implements Serializable{
 	private String id;
 	private Alumno alumno;
 
-	private String Trimestre;
+	private String trimestre;
 	
 	/**
 	 * 

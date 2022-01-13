@@ -31,24 +31,25 @@ public class ActivosService {
 		Query query1 = new Query();
 		Query query2 = new Query();
 		query.addCriteria(new Criteria().andOperator(
-				Criteria.where("PLA").is(plan),
-				Criteria.where("UT_RE").is(trimestre+"I"),
-				Criteria.where("EDO").is(estado)));
+				Criteria.where("alumno.PLA").is(plan),
+				Criteria.where("trimestre").is(trimestre+"I")));
 		
 		query1.addCriteria(new Criteria().andOperator(
-				Criteria.where("PLA").is(plan),
-				Criteria.where("UT_RE").is(trimestre+"P"),
-				Criteria.where("EDO").is(estado)));
+				Criteria.where("alumno.PLA").is(plan),
+				Criteria.where("trimestre").is(trimestre+"P")));
 		
 		query2.addCriteria(new Criteria().andOperator(
-				Criteria.where("PLA").is(plan),
-				Criteria.where("UT_RE").is(trimestre+"O"),
-				Criteria.where("EDO").is(estado)));
+				Criteria.where("alumno.PLA").is(plan),
+				Criteria.where("trimestre").is(trimestre+"O")));
 		
-		int cont = (int) mongoTemplate.count(query, Alumno.class);
-		int cont1 = (int) mongoTemplate.count(query1, Alumno.class);
-		int cont2 = (int) mongoTemplate.count(query2, Alumno.class);
+		int cont = (int) mongoTemplate.count(query, Activos.class);
+		System.out.println("1 "+cont);
+		int cont1 = (int) mongoTemplate.count(query1, Activos.class);
+		System.out.println("2 "+cont1);
+		int cont2 = (int) mongoTemplate.count(query2, Activos.class);
+		System.out.println("3 "+cont2);
 		int suma = cont+cont1+cont2;
+		
 		return suma;
 	}
 	
@@ -65,6 +66,7 @@ public class ActivosService {
 				Criteria.where("alumno.EDO").is(estado)));
 
 		int cont = (int) mongoTemplate.count(query, Activos.class);
+		System.out.println("TRimestre: "+ trimestre+", cont"+cont);
 		return cont;
 	}
 }
