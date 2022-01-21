@@ -1,4 +1,4 @@
-package filters;
+package com.uam.aga.app.filters;
 
 import java.io.IOException;
 import java.util.Date;
@@ -25,9 +25,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uam.aga.app.models.Usuario;
-import com.uam.aga.app.services.UsuarioService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
+
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 
 public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationFilter{

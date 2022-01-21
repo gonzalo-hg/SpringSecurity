@@ -2,7 +2,7 @@ package com.uam.aga.app.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.uam.aga.app.models.Usuario;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 /***
  * Esta interfaz define los metodos que tendran la conexion con la BD

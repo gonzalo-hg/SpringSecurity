@@ -19,13 +19,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.uam.aga.app.models.Rol;
-import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.repository.RoleRepository;
 import com.uam.aga.app.repository.UsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.springboot.app.negocio.modelo.Rol;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 @Service
 @RequiredArgsConstructor

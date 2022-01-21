@@ -1,4 +1,4 @@
-package com.uam.aga.app.models;
+package mx.uam.springboot.app.negocio.modelo;
 
 import java.util.List;
 

@@ -8,10 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.uam.aga.app.models.Rol;
-import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.services.UsuarioService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
+
+import mx.uam.springboot.app.negocio.modelo.Rol;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 @SpringBootApplication
 public class SpringSecurityDosApplication {

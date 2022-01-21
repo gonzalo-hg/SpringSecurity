@@ -149,7 +149,8 @@ public class AlumnoController {
 	}	
 	
 	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso-aing", produces=MediaType.APPLICATION_JSON_VALUE)
-	public  ResponseEntity<Integer> countStudentsActiveByAING(@RequestParam (value ="anioIngreso")  String anioIngreso,
+	public  ResponseEntity<Integer> countStudentsActiveByAING(
+			@RequestParam (value ="anioIngreso")  String anioIngreso,
 			@RequestParam (value = "plan")  String plan){
 		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.countStudentsActiveByAING(anioIngreso, plan));
 	}
@@ -169,4 +170,10 @@ public class AlumnoController {
 		return ResponseEntity.status(HttpStatus.OK).body(cuadro22);
 	}
 	
+	@GetMapping(path = "/alumnos/reportes/edad", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<AlumnoDto>> ageStudent(
+			@RequestParam (value ="anioIngreso")  String anioIngreso
+			){
+		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.returnStudetsDataDateBirth(anioIngreso));
+	}
 }

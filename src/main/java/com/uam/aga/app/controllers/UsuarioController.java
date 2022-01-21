@@ -18,14 +18,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.uam.aga.app.models.Rol;
-import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.services.AlumnoService;
 import com.uam.aga.app.services.AuthorizationService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
 
 import lombok.Data;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
+import mx.uam.springboot.app.negocio.modelo.Rol;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 @RestController
 @RequestMapping("/api")

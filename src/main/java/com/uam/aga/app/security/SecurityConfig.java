@@ -14,8 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import filters.CustomAuthentitcationFilter;
-import filters.CustomAuthorizationFilter;
+import com.uam.aga.app.filters.CustomAuthentitcationFilter;
+import com.uam.aga.app.filters.CustomAuthorizationFilter;
+
 import lombok.RequiredArgsConstructor;
 
 /***

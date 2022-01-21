@@ -53,6 +53,7 @@ public class EgresadoController {
 	public ResponseEntity<List<Egresado>> GraduatedDataTri(
 			@RequestParam (value="trimestre") String trimestre,
 			@RequestParam (value="alumnoPlan") String plan) {
+		
 		return ResponseEntity.status(HttpStatus.OK).body(egresadoService.graduatedData(trimestre, plan));
 	}
 }

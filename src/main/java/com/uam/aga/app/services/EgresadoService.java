@@ -64,8 +64,6 @@ public class EgresadoService {
 	 */
 	public int countGraduatedTri(String trimestre, String plan) {
 		Query query = new Query();
-		Query query1 = new Query();
-		Query query2 = new Query();
 		
 		query.addCriteria(new Criteria().andOperator(
 				Criteria.where("trimestre").is(trimestre),
