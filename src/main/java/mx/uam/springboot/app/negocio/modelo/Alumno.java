@@ -50,7 +50,7 @@ public class Alumno implements Serializable{
 	private String OTRA_CAL;
 	private String NTRI;
 	private String NTRC;
-	private String ESC; //"ESC": "2",
+	private String ESC; 
 	private String PROM;
 	private String FNA;
 	private long EDAD;

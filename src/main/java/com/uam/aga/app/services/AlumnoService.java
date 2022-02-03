@@ -1,11 +1,17 @@
 package com.uam.aga.app.services;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -17,13 +23,16 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 import mx.uam.springboot.app.negocio.modelo.dto.AlumnoDto;
+
 /**
  * 
  * @author Gonzalo Hernandez
  *
  */
+@Slf4j
 @Service
 public class AlumnoService {
 
@@ -120,7 +129,7 @@ public class AlumnoService {
 				Criteria.where("UT_RE").is(trimestre)));
 		query.fields().include("matricula", "PLA", "EDAD", "PATE", "MATE", "NOM", "SEXO");
 		List<Alumno> alumonosCoincidentes = mongoTemplate.find(query, Alumno.class);
-		System.out.println("Tamaño de la consulta: " + alumonosCoincidentes.size());
+		// System.out.println("Tamaño de la consulta: " + alumonosCoincidentes.size());
 		return alumonosCoincidentes;
 	}
 
@@ -143,8 +152,6 @@ public class AlumnoService {
 		return alumno;
 	}
 
-	// METODOS UPDATE/PATCH
-
 	/**
 	 * Actualiza el valor de un atributo de un alumno dado
 	 * 
@@ -157,41 +164,60 @@ public class AlumnoService {
 				BasicUpdate.update(fieldname, fieldValue), FindAndModifyOptions.none(), Alumno.class);
 	}
 
-	/*
-	 * public void cambiaNombreFotos() {
-	 * 
-	 * public void cambiaNombreFotos() {
-	 * System.out.println("Entro cambioNombreFotos"); Query query = new Query();
-	 * File carpetaFotos = new
-	 * File("C:\\Users\\gonza\\OneDrive\\Imágenes\\Saved Pictures\\FOTOGRAFIAS EGRESADOS 20P"
-	 * );//Carpeta donde se almacenan las fotos File[] listaFotos =
-	 * carpetaFotos.listFiles();//Lista de fotos //File[] listaFotosAux //Lista de
-	 * fotos auxiliar String[] nombreFotos = new String[listaFotos.length];//Arreglo
-	 * que guarda los nombres de las fotos String extensionFoto = null;
-	 * //Verificamos que los archivos contenidos sean jpg for (int i = 0; i <
-	 * listaFotos.length; i++) {
-	 * System.out.println(FilenameUtils.getBaseName(listaFotos[i].getName()));
-	 * 
-	 * nombreFotos[i] = FilenameUtils.getBaseName(listaFotos[i].getName());//Se
-	 * guarda el nombre de la foto extensionFoto =
-	 * FilenameUtils.getExtension(listaFotos[i].getName());//Guardamos la extension
-	 * de la foto if(extensionFoto.contains("jpg")) {//Si es una foto cambiamos el
-	 * nombre query.addCriteria(Criteria.where("MAT").is(nombreFotos[i])); //query2
-	 * = new BasicQuery("MAT : " + nombreFotos[i]);
-	 * //query.fields().include("PATE","MATE","NOM"); Alumno alumonosConsulta =
-	 * mongoTemplate.findOne(query,Alumno.class);
-	 * 
-	 * if(alumonosConsulta != null) { System.out.println(alumonosConsulta.getNOM());
-	 * File fotoRenombrada = new
-	 * File("C:\\Users\\gonza\\OneDrive\\Escritorio\\renombrados"+
-	 * "\\"+alumonosConsulta.getNOM()+"_"+alumonosConsulta.getPATE()+"_"+alumonosConsulta.getMATE()+"
-	 * ."+extensionFoto); listaFotos[i].renameTo(fotoRenombrada); }else {
-	 * System.out.println(nombreFotos[i]+" es nulo"); }
-	 * 
-	 * query = new Query(); } //System.out.println(listaFotos[i].getName()); }
-	 * 
-	 * }
-	 */
+	public void cambiaNombreFotos(File photoDirectory) {
+		Query query = new Query();
+		File carpetaFotos = new File("D:\\GONZALO\\proyecto\\Proyecto terminal\\back\\FOTOGRAFIAS");
+		File[] listaFotos = carpetaFotos.listFiles();
+		String[] nombreFotos = new String[listaFotos.length];
+		String extensionFoto = null;
+
+		try {
+			if (isEmptyDirectory(photoDirectory)) {
+				log.info("The directory: {} is empty", photoDirectory.getAbsoluteFile());
+				throw new Exception("You have upload photos");
+			}
+			// Verificamos que los archivos contenidos sean jpg
+			for (int i = 0; i < listaFotos.length; i++) {
+				nombreFotos[i] = FilenameUtils.getBaseName(listaFotos[i].getName());// Seguarda el nombre de la foto
+				extensionFoto = FilenameUtils.getExtension(listaFotos[i].getName());// Guardamos la extensionde la foto
+				if (extensionFoto.contains("jpg")) {
+					query.addCriteria(Criteria.where("matricula").is(nombreFotos[i]));
+					query.fields().include("PATE", "MATE", "NOM");
+					Alumno alumonosConsulta = mongoTemplate.findOne(query, Alumno.class);
+					if (alumonosConsulta != null) {
+						File fotoRenombrada = new File("D:\\GONZALO\\proyecto\\fotos" + "\\" + alumonosConsulta.getNOM()
+								+ "_" + alumonosConsulta.getPATE() + "_" + alumonosConsulta.getMATE() + "."
+								+ extensionFoto);
+						listaFotos[i].renameTo(fotoRenombrada);
+					}
+				}
+				query = new Query();
+			}
+
+		} catch (Exception e) {
+			log.info("Upload files to directory");
+			log.error("Error charge photos: {}", e.getMessage());
+		}
+
+	}
+
+	public static boolean isEmptyDirectory(File directory) throws IOException {
+		// Verifica que el directorio existe
+		if (directory.exists()) {
+			if (!directory.isDirectory()) {
+				// throw exception si el path es un archivo
+				throw new IllegalArgumentException("Expected directory, but was file: " + directory);
+			} else {
+				// crea un straeam para checar los archivos
+				try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory.toPath())) {
+					// regresa false si hay un archivo
+					return !directoryStream.iterator().hasNext();
+				}
+			}
+		}
+		// regresa trye si no tiene archivos.
+		return true;
+	}
 
 	/**
 	 * Consulta para saber si la BD de Mongo contiene almenos un registro
@@ -202,12 +228,12 @@ public class AlumnoService {
 		Query query = new Query();
 		// List<Alumno> alumno = mongoTemplate.count(null,Alumno.class);
 		long alumno = mongoTemplate.count(query, Alumno.class);
-		System.out.println("Alumno: " + alumno);
+		// System.out.println("Alumno: " + alumno);
 		if (alumno <= 0) {
-			System.out.println("false");
+			// System.out.println("false");
 			return false;
 		} else {
-			System.out.println("true");
+			// System.out.println("true");
 			return true;
 		}
 	}
@@ -264,43 +290,52 @@ public class AlumnoService {
 	}
 
 	/**
-	 * Metodo que devuelve los datos de los estudiantes con una edad de 17 a 24 
-	 * del cierto año en especifico, pero la edad es actual. 
+	 * Metodo que devuelve los datos de los estudiantes con una edad de 17 a 24 del
+	 * cierto año en especifico, pero la edad es actual.
+	 * 
 	 * @param anioBusqueda
 	 * @return AlumnoDto alumnoDto
 	 */
 	public List<AlumnoDto> returnStudetsDataDateBirth(String anioBusqueda) {
 		Query query = new Query();
 		query.addCriteria(new Criteria().andOperator(Criteria.where("AING").is(anioBusqueda)));
-		query.fields().include("matricula", "NOM", "PATE", "MATE", "CORREO_E", "PLA", "FNA","TEL");
+		query.fields().include("matricula", "NOM", "PATE", "MATE", "CORREO_E", "PLA", "FNA", "TEL");
 		List<Alumno> alumnos = mongoTemplate.find(query, Alumno.class);
-		int c = 0;
+
 		List<AlumnoDto> alumnoDTO = new ArrayList<AlumnoDto>();
-		
+
 		for (Alumno alumno : alumnos) {
 			if ((getAgeFormatYY(alumno) >= 17) && (getAgeFormatYY(alumno) <= 24)) {
-				//System.out.println("FNA: " + alumno.getFNA() + "Nombre: " + alumno.getNOM() + " Edad: " + getAgeFormatYY(alumno));
 				alumnoDTO.add(AlumnoDto.creaDto(alumno, getAgeFormatYY(alumno)));
-				c++;
 			}
 		}
-		System.out.println("Tamaño" + c);
+
 		return alumnoDTO;
 	}
-	
+
 	/**
-	 * Metodo que sirve para calcular la edad de un alumno
-	 * La fecha de nacimiento tiene el formato dd/MM/yy
+	 * Metodo que sirve para calcular la edad de un alumno La fecha de nacimiento
+	 * tiene el formato dd/MM/yy
+	 * 
 	 * @param alumno
 	 * @return int edad
 	 */
 	public int getAgeFormatYY(Alumno alumno) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-		LocalDate fechaNaciemiento = LocalDate.parse(alumno.getFNA(), formatter);
+
+		LocalDate fechaNaciemiento = LocalDate.now();
+		fechaNaciemiento = LocalDate.parse(alumno.getFNA(), formatter);
+
+		if (fechaNaciemiento.getYear() == 2099 || fechaNaciemiento.getYear() == 2098
+				|| fechaNaciemiento.getYear() == 2097) {
+			Period edad = Period.between(fechaNaciemiento.minusYears(100), LocalDate.now());
+			return edad.getYears();
+		}
+
 		Period edad = Period.between(fechaNaciemiento, LocalDate.now());
 		return edad.getYears();
 	}
-	
+
 	/**
 	 * 
 	 * @param alumno
