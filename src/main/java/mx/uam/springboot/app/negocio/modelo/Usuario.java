@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
  */
 @Document(collection = "Usuarios")
 @Data
-
+@Builder
 /**
  * Definimos un constructor sin argumetos
  * @author gonzalo
@@ -42,6 +43,7 @@ public class Usuario {
 	private String password;
 	
 	private List<Rol>  roles;
+
 
 }
 	
