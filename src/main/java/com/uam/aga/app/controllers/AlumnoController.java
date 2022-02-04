@@ -126,8 +126,8 @@ public class AlumnoController {
 	 * @return 
 	 */
 	@GetMapping(path = "/alumnos/fotos/cambio-nombre", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String>  changeNamePhotos(@RequestParam(value = "directory") File  photoDirectory) {
-		alumnoService.cambiaNombreFotos(photoDirectory);
+	public ResponseEntity<String>  changeNamePhotos() {
+		alumnoService.cambiaNombreFotos();
 		return ResponseEntity.status(HttpStatus.OK).body("");
 		
 	}

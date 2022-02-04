@@ -164,16 +164,16 @@ public class AlumnoService {
 				BasicUpdate.update(fieldname, fieldValue), FindAndModifyOptions.none(), Alumno.class);
 	}
 
-	public void cambiaNombreFotos(File photoDirectory) {
+	public void cambiaNombreFotos() {
 		Query query = new Query();
-		File carpetaFotos = new File("D:\\GONZALO\\proyecto\\Proyecto terminal\\back\\FOTOGRAFIAS");
+		File carpetaFotos = new File("D:\\PROYECTO_TERMINAL\\fotos\\FOTOGRAFIAS\\FOTOGRAFIAS");
 		File[] listaFotos = carpetaFotos.listFiles();
 		String[] nombreFotos = new String[listaFotos.length];
 		String extensionFoto = null;
 
 		try {
-			if (isEmptyDirectory(photoDirectory)) {
-				log.info("The directory: {} is empty", photoDirectory.getAbsoluteFile());
+			if (isEmptyDirectory(carpetaFotos)) {
+				log.info("The directory: {} is empty", carpetaFotos.getAbsoluteFile());
 				throw new Exception("You have upload photos");
 			}
 			// Verificamos que los archivos contenidos sean jpg
@@ -185,7 +185,7 @@ public class AlumnoService {
 					query.fields().include("PATE", "MATE", "NOM");
 					Alumno alumonosConsulta = mongoTemplate.findOne(query, Alumno.class);
 					if (alumonosConsulta != null) {
-						File fotoRenombrada = new File("D:\\GONZALO\\proyecto\\fotos" + "\\" + alumonosConsulta.getNOM()
+						File fotoRenombrada = new File("D:\\PROYECTO_TERMINAL\\fotos\\renombradas" + "\\" + alumonosConsulta.getNOM()
 								+ "_" + alumonosConsulta.getPATE() + "_" + alumonosConsulta.getMATE() + "."
 								+ extensionFoto);
 						listaFotos[i].renameTo(fotoRenombrada);
