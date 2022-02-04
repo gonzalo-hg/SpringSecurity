@@ -1,24 +1,23 @@
 package com.uam.aga.app.controllers;
 
 
+import java.io.File;
 import java.lang.reflect.Field;
-import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +25,7 @@ import com.uam.aga.app.services.AlumnoService;
 
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 import mx.uam.springboot.app.negocio.modelo.dto.AlumnoDto;
+import mx.uam.springboot.app.negocio.modelo.dto.Cuadro22DTO;
 
 @RestController
 @RequestMapping("/api")
@@ -58,16 +58,7 @@ public class AlumnoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(alumnoService.findByMatricula(matricula));
 		//return alumnoRepository.findByMAT(matricula);
 	}
-	
-	/**
-	 * Endpoint para realizar una petición GET
-	 * @return Una lista con todos los alumnos existentes
-	 
-	@GetMapping("/alumnos")
-	public List<Alumno> mostrarProductos(){
-		return alumnoService.findAll();	
-	}	*/
-	
+
 	/**
 	 * Endpoint para realizar una petición GET
 	 * @param plan El plan de estudios de los alumnos a consultar
@@ -78,15 +69,6 @@ public class AlumnoController {
 	public List<AlumnoDto> findByPlanAndTrimestre(@PathVariable String plan, @PathVariable String trimestre){
 		return alumnoService.findByPlanAndTrimestre(plan, trimestre);
 	} 
-	
-	/*
-	@GetMapping(path = "/hotels/{hotelCode}/prices", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResultListDto <HotelPrices>> retrievePrices(@PathVariable(
-			"hotelCode") String hotelCode,
-			@ApiParam(name = "startDate", value = "Date yyyy-mm-dd", defaultValue = "2020-01-01", required=true)
-			@RequestParam(required = true) String startDate,
-			@ApiParam(name = "endDate", value = "Date yyyy-mm-dd", defaultValue = "2020-01-01", required=false)
-			@RequestParam(required = fa*/
 	
 	/**
 	 * Endpoint para realizar una petición GET
@@ -100,9 +82,6 @@ public class AlumnoController {
 			@PathVariable final String sexo,@PathVariable final String trimestre){
 				return alumnoService.findByPlanAndSexoAndTrimestre(plan,sexo,trimestre);
 	}
-
-	
-	//PETICIONES POST
 
 	/**
 	 * Metodo para agregar alumnos a la BD
@@ -142,19 +121,17 @@ public class AlumnoController {
 		}
 	}
 	
-	
-	
-	//OTROS
-	
 	/**
 	 * Metodo para renombrar las fotografias
-	 * 
-	@GetMapping("/alumnos/fotos/cambio-nombre")
-	public void findByMatricula() {
+	 * @return 
+	 */
+	@GetMapping(path = "/alumnos/fotos/cambio-nombre", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String>  changeNamePhotos() {
 		alumnoService.cambiaNombreFotos();
-		//return alumnoRepository.findByMAT(matricula);
+		return ResponseEntity.status(HttpStatus.OK).body("");
+		
 	}
-	*/
+	
 	
 	/**
 	 * Endpoint para realizar una petición GET 
@@ -175,10 +152,32 @@ public class AlumnoController {
 		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.findAnyAlumnos());	
 	}	
 	
-	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso", produces=MediaType.APPLICATION_JSON_VALUE)
-	public  ResponseEntity<Integer> cuentaNuevoIngreso(@RequestParam (value ="trimestre")  String trimestre,
+	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso-aing", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<Integer> countStudentsActiveByAING(
+			@RequestParam (value ="anioIngreso")  String anioIngreso,
 			@RequestParam (value = "plan")  String plan){
-		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.countStudentsActive(trimestre, plan));
+		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.countStudentsActiveByAING(anioIngreso, plan));
 	}
 	
+	@GetMapping(path = "/alumnos/reporte-cuenta/nuevo-ingreso-trii", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<Cuadro22DTO> countStudentsActiveByTRII(
+			@RequestParam (value ="trimI")  String trimI,
+			@RequestParam (value ="trimP")  String trimP,
+			@RequestParam (value ="trimO")  String trimO,
+			@RequestParam (value = "plan")  String plan,
+			@RequestParam (value = "anioIngreso")  String anioIngreso){
+		Cuadro22DTO cuadro22 = new Cuadro22DTO(); 
+		cuadro22.setTrimI(alumnoService.countStudentsActiveByTRII(trimI, plan));
+		cuadro22.setTrimP(alumnoService.countStudentsActiveByTRII(trimP, plan));
+		cuadro22.setTrimO(alumnoService.countStudentsActiveByTRII(trimO, plan));
+		cuadro22.setTotal(alumnoService.countStudentsActiveByAING(anioIngreso, plan));
+		return ResponseEntity.status(HttpStatus.OK).body(cuadro22);
+	}
+	
+	@GetMapping(path = "/alumnos/reportes/edad", produces=MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<List<AlumnoDto>> ageStudent(
+			@RequestParam (value ="anioIngreso")  String anioIngreso
+			){
+		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.returnStudetsDataDateBirth(anioIngreso));
+	}
 }

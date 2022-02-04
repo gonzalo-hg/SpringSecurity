@@ -1,4 +1,4 @@
-package filters;
+package com.uam.aga.app.filters;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +42,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		System.out.println("EntrasSSSSSSSSS????");
 		//Si el usuario quiere solo iniciar sesion, no pasa por ningun filtro
 		if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
 			//Si el path de entrada es igual a los anteriores se deja pasar a la autorizacion

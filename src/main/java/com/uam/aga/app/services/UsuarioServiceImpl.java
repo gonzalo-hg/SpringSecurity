@@ -6,11 +6,6 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,13 +14,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.uam.aga.app.models.Rol;
-import com.uam.aga.app.models.Usuario;
 import com.uam.aga.app.repository.RoleRepository;
 import com.uam.aga.app.repository.UsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.springboot.app.negocio.modelo.Rol;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 @Service
 @RequiredArgsConstructor
@@ -128,7 +123,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		
 		usuario.getRoles().forEach(role -> {
 			authorities.add(new SimpleGrantedAuthority(role.getNombre()));
-			System.out.println(role);
+			//System.out.println(role);
 			});
 		
 		return new User(usuario.getUsername(), usuario.getPassword(),authorities);

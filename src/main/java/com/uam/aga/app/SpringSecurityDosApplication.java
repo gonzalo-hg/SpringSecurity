@@ -8,10 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.uam.aga.app.models.Rol;
-import com.uam.aga.app.models.Usuario;
-import com.uam.aga.app.services.UsuarioService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
+
+import mx.uam.springboot.app.negocio.modelo.Rol;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
+
 
 @SpringBootApplication
 public class SpringSecurityDosApplication {
@@ -29,22 +30,55 @@ public class SpringSecurityDosApplication {
 		return new BCryptPasswordEncoder();
 	}
 	
+	/*
 	@Bean
 	CommandLineRunner run(UsuarioServiceImpl usuarioService) {
 		return args ->{
-			//usuarioService.saveRole(new Rol("admin"));
-			//usuarioService.saveRole(new Rol("user"));
-			
-			//usuarioService.saveUsuario(new Usuario(null, "gonzalo", "zalo1", "1234", new ArrayList<>()));
-			//usuarioService.saveUsuario(new Usuario(null, "ulises", "ulises1", "1234", new ArrayList<>()));
-			//usuarioService.saveUsuario(new Usuario(null, "antonio", "anton1", "5874", new ArrayList<>()));
-			//usuarioService.saveUsuario(new Usuario(null, "prueba","pruebaP","pruebaM", "prueba1@gmail.com", "1234", new ArrayList<>()));
-			//usuarioService.addRolUsuario("zalo1", "admin");
-			//usuarioService.addRolUsuario("zalo1", "user");
-			//usuarioService.addRolUsuario("ulises1", "admin");
-			//usuarioService.addRolUsuario("anton1", "admin");
+			usuarioService.saveRole(new Rol("admin"));
+			usuarioService.saveRole(new Rol("user"));
+			Usuario gozalo = Usuario.builder()
+					.nombre("gonzalo")
+					.apellidoP("1234")
+					.apellidoM("1234")
+					.username("zalo1")
+					.password("1234")
+					.roles(new ArrayList<>())
+					.build();
+			Usuario ulises = Usuario.builder()
+					.nombre("Ulises")
+					.apellidoP("Lemarroy")
+					.apellidoM("Jiménez")
+					.username("ulises1")
+					.password("1234")
+					.roles(new ArrayList<>())
+					.build();
+			Usuario antonio = Usuario.builder()
+					.nombre("Antonio")
+					.apellidoP("Mendoza")
+					.apellidoM("Null")
+					.username("anton1")
+					.password("1234")
+					.roles(new ArrayList<>())
+					.build();
+			Usuario prueba = Usuario.builder()
+					.nombre("prueba")
+					.apellidoP("pruebaP")
+					.apellidoM("pruebaM")
+					.username("prueba1@gmail.com")
+					.password("1234")
+					.roles(new ArrayList<>())
+					.build();
+			usuarioService.saveUsuario(gozalo);
+			usuarioService.saveUsuario(ulises);
+			usuarioService.saveUsuario(antonio);
+			usuarioService.saveUsuario(prueba);
+			usuarioService.addRolUsuario("zalo1", "admin");
+			usuarioService.addRolUsuario("zalo1", "user");
+			usuarioService.addRolUsuario("ulises1", "admin");
+			usuarioService.addRolUsuario("anton1", "admin");
+			usuarioService.addRolUsuario("prueba1@gmail.com", "user");
 		};
-	}
+	}*/
 	
 
 

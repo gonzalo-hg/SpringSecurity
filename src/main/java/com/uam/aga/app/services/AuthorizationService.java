@@ -18,8 +18,9 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uam.aga.app.models.Rol;
-import com.uam.aga.app.models.Usuario;
+
+import mx.uam.springboot.app.negocio.modelo.Rol;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 
 @Service

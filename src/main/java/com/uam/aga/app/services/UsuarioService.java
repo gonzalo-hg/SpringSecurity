@@ -2,8 +2,8 @@ package com.uam.aga.app.services;
 
 import java.util.List;
 
-import com.uam.aga.app.models.Rol;
-import com.uam.aga.app.models.Usuario;
+import mx.uam.springboot.app.negocio.modelo.Rol;
+import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 /**
  * En esta clase se definen todos los metodos que nos ayudaran 
