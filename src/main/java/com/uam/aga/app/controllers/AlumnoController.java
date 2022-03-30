@@ -1,7 +1,6 @@
 package com.uam.aga.app.controllers;
 
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +10,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;

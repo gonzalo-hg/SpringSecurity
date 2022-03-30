@@ -163,10 +163,15 @@ public class AlumnoService {
 		mongoTemplate.findAndModify(BasicQuery.query(Criteria.where("id").is(alumnoId)),
 				BasicUpdate.update(fieldname, fieldValue), FindAndModifyOptions.none(), Alumno.class);
 	}
-
+	
+	
+	/**
+	 * Metodo que sirve para renombrar fotos
+	 * 
+	 */
 	public void cambiaNombreFotos() {
 		Query query = new Query();
-		File carpetaFotos = new File("D:\\PROYECTO_TERMINAL\\fotos\\FOTOGRAFIAS\\FOTOGRAFIAS");
+		File carpetaFotos = new File("D:\\PROYECTO_TERMINAL\\fotos\\FOTOGRAFIAS");
 		File[] listaFotos = carpetaFotos.listFiles();
 		String[] nombreFotos = new String[listaFotos.length];
 		String extensionFoto = null;

@@ -64,8 +64,6 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		} else {
 			Usuario user = null;
 			try {
-				System.out.println("Usuario: " +username);
-			System.out.println("Password: "+ password);
 				user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
 				
 				username = user.getUsername();
@@ -127,7 +125,6 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		
 		String nomnbreU = usuario.getUsername();
 		//usuarioService.getUsuario(nomnbreU);
-		System.out.println("Nombreeeee: " + nomnbreU);
 		String refreshToken = JWT.create()
 				.withSubject(usuario.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() +30*60*1000))

@@ -1,5 +1,6 @@
 package com.uam.aga.app.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.uam.aga.app.filters.CustomAuthentitcationFilter;
 import com.uam.aga.app.filters.CustomAuthorizationFilter;
-
-import lombok.RequiredArgsConstructor;
 
 /***
  * Esta clase permite hacer todas las configuraciones necesarias para decirle a Spring

@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import mx.uam.springboot.app.negocio.modelo.Activos;
-import mx.uam.springboot.app.negocio.modelo.Alumno;
 
 /**
  * @author Gonzalo Hernández
@@ -25,29 +24,32 @@ public class ActivosService {
 	 * y el plan de estudios.
 	 * 
 	 */
-	public int currentStudents(String plan, String trimestre,String estado) {
+	public int currentStudents(String plan, String trimestre) {
 		
 		Query query = new Query();
 		Query query1 = new Query();
 		Query query2 = new Query();
 		query.addCriteria(new Criteria().andOperator(
-				Criteria.where("alumno.PLA").is(plan),
-				Criteria.where("trimestre").is(trimestre+"I")));
+				Criteria.where("trimestre").is(trimestre+"I"),
+				Criteria.where("alumno.PLA").is(plan)
+				));
 		
 		query1.addCriteria(new Criteria().andOperator(
-				Criteria.where("alumno.PLA").is(plan),
-				Criteria.where("trimestre").is(trimestre+"P")));
+				Criteria.where("trimestre").is(trimestre+"P"),
+				Criteria.where("alumno.PLA").is(plan)
+				));
 		
 		query2.addCriteria(new Criteria().andOperator(
-				Criteria.where("alumno.PLA").is(plan),
-				Criteria.where("trimestre").is(trimestre+"O")));
+				Criteria.where("trimestre").is(trimestre+"O"),
+				Criteria.where("alumno.PLA").is(plan)
+				));
 		
 		int cont = (int) mongoTemplate.count(query, Activos.class);
-		System.out.println("1 "+cont);
+		System.out.println("Activo1 : "+cont);
 		int cont1 = (int) mongoTemplate.count(query1, Activos.class);
-		System.out.println("2 "+cont1);
+		System.out.println("Activo2 : "+cont1);
 		int cont2 = (int) mongoTemplate.count(query2, Activos.class);
-		System.out.println("3 "+cont2);
+		System.out.println("Activo3 : "+cont2);
 		int suma = cont+cont1+cont2;
 		
 		return suma;
@@ -57,13 +59,15 @@ public class ActivosService {
 	 * Metodo para poder contar los alumnos activos por trimestre
 	 * y el plan de estudios.
 	 * 
+	 * Se quito el estado. 
+	 * 
 	 */
-	public int currentStudentsTri(String plan, String trimestre,String estado) {
+	public int currentStudentsTri(String plan, String trimestre) {
 		Query query = new Query();
 		query.addCriteria(new Criteria().andOperator(
-				Criteria.where("alumno.PLA").is(plan),
 				Criteria.where("trimestre").is(trimestre),
-				Criteria.where("alumno.EDO").is(estado)));
+				Criteria.where("alumno.PLA").is(plan)
+				));
 
 		int cont = (int) mongoTemplate.count(query, Activos.class);
 		System.out.println("TRimestre: "+ trimestre+", cont"+cont);

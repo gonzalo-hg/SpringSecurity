@@ -26,9 +26,8 @@ public class ActivosController {
 	@GetMapping(path="/alumnos/reporte-cuenta/alumnos-activos",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> currentStudents(
 			@RequestParam (value="plan") String plan,
-			@RequestParam (value="trimestre") String trimestre,
-			@RequestParam (value="edo") String edo) {
-		return ResponseEntity.status(HttpStatus.OK).body(activosService.currentStudents(plan, trimestre, edo));
+			@RequestParam (value="trimestre") String trimestre) {
+		return ResponseEntity.status(HttpStatus.OK).body(activosService.currentStudents(plan, trimestre));
 	}
 	
 	/**
@@ -48,12 +47,13 @@ public class ActivosController {
 			@RequestParam (value ="trimP")  String trimP,
 			@RequestParam (value ="trimO")  String trimO,
 			@RequestParam (value = "plan")  String plan,
-			@RequestParam (value = "edo")  String edo){
+			@RequestParam (value = "anio") String anio){
 		Cuadro22DTO cuadro22 = new Cuadro22DTO(); 
-		cuadro22.setTrimI(activosService.currentStudentsTri(plan, trimI,edo));
-		cuadro22.setTrimP(activosService.currentStudentsTri(plan, trimP,edo));
-		cuadro22.setTrimO(activosService.currentStudentsTri(plan, trimO,edo));
-		cuadro22.setTotal(activosService.currentStudents(plan, trimO,edo));
+		cuadro22.setTrimI(activosService.currentStudentsTri(plan, trimI));
+		cuadro22.setTrimP(activosService.currentStudentsTri(plan, trimP));
+		cuadro22.setTrimO(activosService.currentStudentsTri(plan, trimO));
+		
+		cuadro22.setTotal(activosService.currentStudents(plan, anio));
 		return ResponseEntity.status(HttpStatus.OK).body(cuadro22); 
 	}
 }
