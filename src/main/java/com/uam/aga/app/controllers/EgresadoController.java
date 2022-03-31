@@ -27,25 +27,42 @@ public class EgresadoController {
 	@Autowired
 	private EgresadoService egresadoService;
 	
+	/**
+	 * 
+	 * @param trimestre
+	 * @param plan
+	 * @return
+	 */
 	@GetMapping(path="/alumnos/reporte-cuenta/egresados-anio",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> currentStudents(
-			@RequestParam (value="trimestre") String trimestre,
+			@RequestParam (value = "anio") String anio,
 			@RequestParam (value="alumnoPlan") String plan) {
-		return ResponseEntity.status(HttpStatus.OK).body(egresadoService.countGraduated(trimestre, plan));
+		return ResponseEntity.status(HttpStatus.OK).body(egresadoService.countGraduated(anio, plan));
 	}
 	
+	/**
+	 * Metodo que sirve para saber cuantos alumnos egresados hay por trimestre
+	 * Se toma para el trimestre I el AGA P
+	 * Se toma para el trimestre P el AGA O
+	 * Se toma para el trimestre O el AGA I del siguiente ciclo. 
+	 * @param trimI
+	 * @param trimP
+	 * @param trimO
+	 * @param alumnoPlan
+	 * @return
+	 */
 	@GetMapping(path = "/alumnos/reporte-cuenta/egresados-trii", produces=MediaType.APPLICATION_JSON_VALUE)
 	public  ResponseEntity<Cuadro22DTO> countCurrentStudentsByTRII(
 			@RequestParam (value ="trimI")  String trimI,
 			@RequestParam (value ="trimP")  String trimP,
 			@RequestParam (value ="trimO")  String trimO,
-			@RequestParam (value = "trimestre")  String trimestre,
-			@RequestParam (value = "alumnoPlan")  String alumnoPlan){
+			@RequestParam (value = "alumnoPlan")  String alumnoPlan)
+			{
 		Cuadro22DTO cuadro22 = new Cuadro22DTO(); 
-		cuadro22.setTrimI(egresadoService.countGraduatedTri(trimI,alumnoPlan));
-		cuadro22.setTrimP(egresadoService.countGraduatedTri(trimP,alumnoPlan));
-		cuadro22.setTrimO(egresadoService.countGraduatedTri(trimO,alumnoPlan));
-		cuadro22.setTotal(egresadoService.countGraduated(trimestre,alumnoPlan));
+		cuadro22.setTrimI(egresadoService.countGraduatedTri(trimP,trimI,alumnoPlan));
+		cuadro22.setTrimP(egresadoService.countGraduatedTri(trimO,trimP,alumnoPlan));
+		cuadro22.setTrimO(egresadoService.countGraduatedTri(trimI,trimO,alumnoPlan));
+		//cuadro22.setTotal(egresadoService.countGraduated(trimestre,alumnoPlan));
 		return ResponseEntity.status(HttpStatus.OK).body(cuadro22); 
 	}
 	

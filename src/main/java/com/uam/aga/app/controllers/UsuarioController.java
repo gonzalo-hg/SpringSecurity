@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,6 @@ import com.uam.aga.app.services.AlumnoService;
 import com.uam.aga.app.services.AuthorizationService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
 
-import lombok.Data;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 import mx.uam.springboot.app.negocio.modelo.Rol;
 import mx.uam.springboot.app.negocio.modelo.Usuario;
