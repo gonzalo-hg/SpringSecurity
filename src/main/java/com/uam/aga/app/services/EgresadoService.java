@@ -29,24 +29,16 @@ public class EgresadoService {
 	 * @param plan String
 	 * @return total int, cantidad graduados
 	 */
-	public int countGraduated(String anio, String trimestreUtaa, String plan, String estado) {
+	public int countGraduated(String anio, String plan) {
 		Query query = new Query();
 		Query query1 = new Query();
 		Query query2 = new Query();
-
-		query.addCriteria(new Criteria().andOperator(Criteria.where("trimestre").is(anio + "I"),
-				Criteria.where("alumno.UT_AA").is(trimestreUtaa), Criteria.where("alumno.PLA").is(plan),
-				Criteria.where("alumno,EDO").is(estado)));
-
-		query1.addCriteria(new Criteria().andOperator(Criteria.where("trimestre").is(anio + "P"),
-				Criteria.where("alumno.UT_AA").is(trimestreUtaa), Criteria.where("alumno.PLA").is(plan),
-				Criteria.where("alumno,EDO").is(estado)
-
-		));
-
-		query2.addCriteria(new Criteria().andOperator(Criteria.where("trimestre").is(anio + "O"),
-				Criteria.where("alumno.UT_AA").is(trimestreUtaa), Criteria.where("alumno.PLA").is(plan),
-				Criteria.where("alumno,EDO").is(estado)));
+		query.addCriteria(new Criteria().andOperator(Criteria.where("trimestre").is(anio+"P"),
+				Criteria.where("alumno.UT_AA").is(anio+"I"), Criteria.where("alumno.PLA").is(plan)));
+		query1.addCriteria(new Criteria().andOperator(Criteria.where("trimestre").is(anio+"O"),
+				Criteria.where("alumno.UT_AA").is(anio+"P"), Criteria.where("alumno.PLA").is(plan)));
+		query2.addCriteria(new Criteria().andOperator(Criteria.where("trimestre").is(anio+"I"),
+				Criteria.where("alumno.UT_AA").is(anio+"O"), Criteria.where("alumno.PLA").is(plan)));
 
 		int count = (int) mongoTemplate.count(query, Egresado.class);
 		int count1 = (int) mongoTemplate.count(query1, Egresado.class);
@@ -69,8 +61,6 @@ public class EgresadoService {
 				Criteria.where("alumno.UT_AA").is(trimUtaa), Criteria.where("alumno.PLA").is(plan)));
 
 		int count = (int) mongoTemplate.count(query, Egresado.class);
-		System.out.println("Query: " + query);
-		System.out.println("Esto que es: "+count);
 		return count;
 	}
 

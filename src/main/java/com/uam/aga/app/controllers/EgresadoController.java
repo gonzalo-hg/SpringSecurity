@@ -35,9 +35,9 @@ public class EgresadoController {
 	 */
 	@GetMapping(path="/alumnos/reporte-cuenta/egresados-anio",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> currentStudents(
-			@RequestParam (value="trimestre") String trimestre,
+			@RequestParam (value = "anio") String anio,
 			@RequestParam (value="alumnoPlan") String plan) {
-		return ResponseEntity.status(HttpStatus.OK).body(egresadoService.countGraduated(trimestre, plan,"",""));
+		return ResponseEntity.status(HttpStatus.OK).body(egresadoService.countGraduated(anio, plan));
 	}
 	
 	/**
