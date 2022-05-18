@@ -32,11 +32,17 @@ public class EgresadoController {
 	 * @param trimestre
 	 * @param plan
 	 * @return
+	 * @throws Exception 
 	 */
 	@GetMapping(path="/alumnos/reporte-cuenta/egresados-anio",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> currentStudents(
 			@RequestParam (value = "anio") String anio,
-			@RequestParam (value="alumnoPlan") String plan) {
+			@RequestParam (value="alumnoPlan") String plan) throws Exception {
+		if(anio==null || plan==null) {
+			System.out.println("Entras; " +HttpStatus.BAD_REQUEST);
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(egresadoService.countGraduated(anio, plan));
 	}
 	

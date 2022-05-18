@@ -89,6 +89,8 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		//Y el administrador de hacer autetnica con los datos del request
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 		//Se puede establecer enviar el token al body
+		System.out.println("Token: "+ authToken);
+		System.out.println("Status: "+response.getStatus());
 		return authenticationManager.authenticate(authToken);
 	}
 	
@@ -101,7 +103,11 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authentication) throws IOException, ServletException {
-	
+		System.out.println("request: "+ request);
+		System.out.println("response: " + response.getHeaderNames());
+		System.out.println("chain: " +  chain);
+		System.out.println("Authentication: "+authentication);
+		System.out.println("Entraste al success:S");
 		//Guardamos el usuario autenticado
 		User usuario = (User) authentication.getPrincipal();
 		//Se define un objeto Algorithm para la verificacion del token 
@@ -112,31 +118,29 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 								//Mezcla el secreo con datos del mensaje y hace esto por setunda vez
 		//public static final String SECRET = Base64Utils.encodeToString("Alguna.Clave.Secreta.123456".getBytes()); ejemplo de una palabra secreta
 	
-		Map<String, String> sss =  new HashMap<>();
-		sss.put("nombre", "uuuu");
+		//Map<String, String> sss =  new HashMap<>();
+		//sss.put("nombre", "uuuu");
 		String accessToken = JWT.create()
 				//pasamos el nombre del usuario en una cedena
 				.withSubject(usuario.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
 				.withIssuer(request.getRequestURL().toString())
 				.withClaim("roles", usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-				.withPayload(sss)
+				//.withPayload(sss)
 				.sign(algorithm);//Crea un nuevo JWT y firma con el algoritmo dado
 		
-		String nomnbreU = usuario.getUsername();
+		//String nomnbreU = usuario.getUsername();
 		//usuarioService.getUsuario(nomnbreU);
 		String refreshToken = JWT.create()
 				.withSubject(usuario.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() +30*60*1000))
 				.withIssuer(request.getRequestURL().toString())
 				.sign(algorithm);
-		String nombre = "Hola";
 		Map<String, String> tokens  = new HashMap<>();
 		response.setHeader("access_token", accessToken);//Se pasa como un header
 		logger.info(accessToken);
 		//response.setHeader("refresh_token", refreshToken);//se pasa como un header
 		response.setHeader("nombreUsuario", usuario.getUsername());
-		response.setHeader("nombre",nombre);
 		//Pasamos los token al body
 		tokens.put("accessToken", accessToken);
 		//tokens.put("refreshToken", refreshToken);
@@ -154,6 +158,10 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
+		
+		System.out.println("request: "+ request);
+		System.out.println("response: " + response.getHeaderNames());
+		System.out.println("filed: " +  failed);
 
 		Map<String, Object> body = new HashMap<String, Object>();
 		body.put("mensaje", "Error de autenticación: username o password incorrecto");

@@ -52,6 +52,8 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		usuario.setPassword(passwordEnconder.encode(usuario.getPassword()));
 		usuario.setApellidoP(usuario.getApellidoP());
 		usuario.setApellidoM(usuario.getApellidoM());
+		System.out.println("USuario guardado Service: "+usuario);
+		
 		return usuarioRepository.save(usuario);
 	}
 	

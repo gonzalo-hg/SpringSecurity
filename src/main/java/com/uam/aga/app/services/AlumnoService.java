@@ -1,7 +1,11 @@
 package com.uam.aga.app.services;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,9 +13,24 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,6 +42,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.mongodb.connection.Stream;
+
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 import mx.uam.springboot.app.negocio.modelo.dto.AlumnoDto;
@@ -163,8 +186,7 @@ public class AlumnoService {
 		mongoTemplate.findAndModify(BasicQuery.query(Criteria.where("id").is(alumnoId)),
 				BasicUpdate.update(fieldname, fieldValue), FindAndModifyOptions.none(), Alumno.class);
 	}
-	
-	
+
 	/**
 	 * Metodo que sirve para renombrar fotos
 	 * 
@@ -190,9 +212,9 @@ public class AlumnoService {
 					query.fields().include("PATE", "MATE", "NOM");
 					Alumno alumonosConsulta = mongoTemplate.findOne(query, Alumno.class);
 					if (alumonosConsulta != null) {
-						File fotoRenombrada = new File("D:\\PROYECTO_TERMINAL\\fotos\\renombradas" + "\\" + alumonosConsulta.getNOM()
-								+ "_" + alumonosConsulta.getPATE() + "_" + alumonosConsulta.getMATE() + "."
-								+ extensionFoto);
+						File fotoRenombrada = new File("D:\\PROYECTO_TERMINAL\\fotos\\renombradas" + "\\"
+								+ alumonosConsulta.getNOM() + "_" + alumonosConsulta.getPATE() + "_"
+								+ alumonosConsulta.getMATE() + "." + extensionFoto);
 						listaFotos[i].renameTo(fotoRenombrada);
 					}
 				}
@@ -353,4 +375,136 @@ public class AlumnoService {
 		return edad.getYears();
 	}
 
+	@SuppressWarnings("deprecation")
+	public static void getExcel() throws EncryptedDocumentException, IOException, InvalidFormatException {
+		File f = new File("D:\\PROYECTO_TERMINAL\\excel\\activosTutor.xls");
+		// String ruta = "D:\\PROYECTO_TERMINAL\\excel\\activosTutor.xls";
+		
+		
+		//System.out.println("Ruta: " + excelRectoria.getAbsolutePath());
+		InputStream input = new FileInputStream(f);
+		Workbook wb = WorkbookFactory.create(input);
+		Sheet sheet = wb.getSheetAt(0);
+
+		
+
+		int iRow = 0;
+		int iRow2 = 0;
+		int iRow3 = 0;
+		
+
+		Row row = sheet.getRow(iRow);
+		Row row2 = sheet.getRow(iRow2);
+		Row row3 = sheet.getRow(iRow3);
+		
+
+		ArrayList economico = new ArrayList<String>();
+		ArrayList matricula = new ArrayList<String>();
+		ArrayList nombre = new ArrayList<String>();
+		ArrayList<Asesor> asesor = new ArrayList<Asesor>();
+		
+
+		while (row != null) {
+
+			Cell cell = row.getCell(0);
+			Cell cell2 = row2.getCell(1);
+			Cell cell3 = row3.getCell(2);
+
+			cell.setCellType(CellType.STRING);
+			cell2.setCellType(CellType.STRING);
+			cell3.setCellType(CellType.STRING);
+
+			String value = cell.getStringCellValue();
+			String value2 = cell2.getStringCellValue();
+			String value3 = cell3.getStringCellValue();
+
+			matricula.add(value);
+			economico.add(value2);
+			nombre.add(value3);
+
+			
+
+			Asesor a = new Asesor(value, value2, value3);
+			asesor.add(a);
+			// String data = sheet.getRow(iRow).getCell(iRow).getStringCellValue();
+			// System.out.println("Valor de cada celda: " + matricula.get(iRow) + "
+			// economico: " + economico.get(iRow2) + " nombre: " +nombre.get(iRow3));
+
+			iRow++;
+			iRow2++;
+			iRow3++;
+		
+			row = sheet.getRow(iRow);
+			row2 = sheet.getRow(iRow2);
+			row3 = sheet.getRow(iRow3);
+			
+			
+		}
+
+		for (int i = 0; i < asesor.size(); i++) {
+			System.out.println("Registro: " + asesor.get(i).getMatricula() + " " + asesor.get(i).getEconomico() + "  "
+					+ asesor.get(i).getNombre());
+
+		}
+		File excelRectoria = new File("D:\\PROYECTO_TERMINAL\\excel\\rectoria.xlsx");
+		
+		FileInputStream inputRectoria = new FileInputStream(excelRectoria);
+		//System.out.println("Input: " + inputRectoria.toString());
+		Workbook wbR = WorkbookFactory.create(inputRectoria);
+		Sheet sheetCbs = wbR.getSheetAt(0);
+		
+		int iRowR = 0;
+		Row rowR = sheetCbs.getRow(iRowR);
+		
+		ArrayList quehay = new ArrayList<String>();
+		while (rowR != null) {
+			Cell cell = rowR.getCell(1);
+			cell.setCellType(CellType.STRING);
+			String value = cell.getStringCellValue();
+			quehay.add(value);
+			iRowR++;
+			rowR = sheetCbs.getRow(iRowR);
+		}
+		
+		for (int i = 0; i < quehay.size(); i++) {
+			System.out.println("Rectoria: "+ quehay.get(i));
+
+		}
+		
+		ArrayList nueva = new ArrayList<>();
+		
+		for (int i = 0; i < quehay.size(); i++) {
+			
+			if(quehay.contains(asesor.get(i).getMatricula())) {
+				System.out.println("Es igual: "+quehay.get(i)+" este: "+asesor.get(i).getMatricula());
+					nueva.add(asesor.get(i));
+				System.out.println("Entro: " + asesor.get(i).getMatricula()+ " "+asesor.get(i).nombre);
+			}
+			else {
+				//System.out.println("No existe: "+asesor.get(i));
+				System.out.print("");
+			}
+			
+		}
+
+	}
+	
+
+
+}
+
+@Getter
+@Setter
+class Asesor {
+
+	String matricula;
+	String economico;
+	String nombre;
+
+	public Asesor(String matricula, String economico, String nombre) {
+		// TODO Auto-generated constructor stub
+		this.matricula = matricula;
+		this.economico = economico;
+		this.nombre = nombre;
+	}
 }

@@ -1,16 +1,36 @@
 package com.uam.aga.app;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.uam.aga.app.services.UsuarioServiceImpl;
+
+import mx.uam.springboot.app.negocio.modelo.Usuario;
+
 
 @SpringBootApplication
 public class SpringSecurityDosApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 		SpringApplication.run(SpringSecurityDosApplication.class, args);
+	
+		
 	}
 	
 	/**
@@ -21,6 +41,22 @@ public class SpringSecurityDosApplication {
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	/*@Bean
+	CommandLineRunner run(UsuarioServiceImpl usuarioService) {
+		return args ->{
+			Usuario t2 = Usuario.builder()
+					.nombre("t2")
+					.apellidoP("1234")
+					.apellidoM("1234")
+					.username("t2")
+					.password("1234")
+					.roles(new ArrayList<>())
+					.build();
+			usuarioService.saveUsuario(t2);
+			usuarioService.addRolUsuario("t2", "admin");
+		};
+	}*/
 	
 	/*
 	@Bean
@@ -71,6 +107,8 @@ public class SpringSecurityDosApplication {
 			usuarioService.addRolUsuario("prueba1@gmail.com", "user");
 		};
 	}*/
+	
+	
 	
 
 

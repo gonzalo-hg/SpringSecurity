@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import lombok.Data;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.uam.aga.app.services.AlumnoService;
-import com.uam.aga.app.services.AuthorizationService;
 import com.uam.aga.app.services.UsuarioServiceImpl;
 
 import mx.uam.springboot.app.negocio.modelo.Alumno;
@@ -50,10 +48,10 @@ public class UsuarioController {
 		return ResponseEntity.ok().body(usuarioService.getUsuarios());
 	}
 	
-	@PostMapping("/usuario/guardar")
+	@PostMapping(value = "/usuario/guardar",consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Usuario>guardarUsuario( @RequestBody Usuario usuario){
 		URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/usuario/guardar").toString());
-		System.out.println(ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario)));
+		System.out.println("Usuario guardado Controller: "+ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario)));
 		return ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario));
 	}
 	
@@ -78,6 +76,8 @@ public class UsuarioController {
 	//public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws JsonGenerationException, JsonMappingException, IOException{
 		//authorizationService.refreshauthorizationToken(request, response);
 //	}
+	
+	
 	
 }
 
