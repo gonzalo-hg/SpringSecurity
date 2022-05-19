@@ -27,7 +27,11 @@ import com.uam.aga.app.services.AlumnoService;
 import mx.uam.springboot.app.negocio.modelo.Alumno;
 import mx.uam.springboot.app.negocio.modelo.dto.AlumnoDto;
 import mx.uam.springboot.app.negocio.modelo.dto.Cuadro22DTO;
-
+/**
+ * 
+ * @author gonza
+ *
+ */
 @RestController
 @RequestMapping("/api")
 public class AlumnoController {

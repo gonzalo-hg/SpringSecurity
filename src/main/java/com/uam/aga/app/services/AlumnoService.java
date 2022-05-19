@@ -376,7 +376,7 @@ public class AlumnoService {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void getExcel() throws EncryptedDocumentException, IOException, InvalidFormatException {
+	public void getExcel() throws EncryptedDocumentException, IOException, InvalidFormatException {
 		File f = new File("D:\\PROYECTO_TERMINAL\\excel\\activosTutor.xls");
 		// String ruta = "D:\\PROYECTO_TERMINAL\\excel\\activosTutor.xls";
 		
