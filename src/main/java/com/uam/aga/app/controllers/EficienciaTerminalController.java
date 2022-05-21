@@ -23,6 +23,14 @@ public class EficienciaTerminalController {
 	@Autowired
 	private EficienciaTerminalService eficienciaTerminalService;
 
+	/**
+	 * Controlador para regresar el numero de alumnos egresados por cohorte
+	 * @param plan
+	 * @param trii
+	 * @param utaa
+	 * @return
+	 * @throws CustomException
+	 */
 	@GetMapping(path = "/alumnos/eficiencia", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getEficienciaTerminalCo(
 			@RequestParam(value = "plan") String plan,
@@ -32,6 +40,12 @@ public class EficienciaTerminalController {
 		return ResponseEntity.status(HttpStatus.OK).body(eficienciaTerminalService.getEficienciaTerminalCo(plan,trii,utaa));
 	}
 	
+	/**
+	 * Controlador que regresa la canditada de alumnos admitidos por año
+	 * @param anioIngreso
+	 * @param plna
+	 * @return
+	 */
 	@GetMapping(path = "/alumnos/eficiencia/admitidos", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getEficienciaAdmitidos(
 			@RequestParam(value = "aing") String anioIngreso,
