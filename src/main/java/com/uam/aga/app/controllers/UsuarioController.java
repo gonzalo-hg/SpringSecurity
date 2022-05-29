@@ -1,13 +1,10 @@
 package com.uam.aga.app.controllers;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
 import lombok.Data;
 
-import org.apache.poi.EncryptedDocumentException;
-import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

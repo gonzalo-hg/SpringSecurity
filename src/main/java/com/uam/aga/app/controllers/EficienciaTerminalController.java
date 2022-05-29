@@ -46,12 +46,22 @@ public class EficienciaTerminalController {
 	 * @param plna
 	 * @return
 	 */
-	@GetMapping(path = "/alumnos/eficiencia/admitidos", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/alumnos/eficiencia/admitidosCoho", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getEficienciaAdmitidos(
 			@RequestParam(value = "aing") String anioIngreso,
 			@RequestParam(value = "plan") String plna){
 		
 		return ResponseEntity.status(HttpStatus.OK).body(eficienciaTerminalService.getAdminitosAnio(anioIngreso, plna));
+	}
+	
+	@GetMapping(path = "/alumnos/eficiencia/admitidosflex", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> getEficienciaTerFlex(
+			@RequestParam(value = "plan") String plan,
+			@RequestParam(value = "aing") String aing){
+		if(plan == null || aing == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(eficienciaTerminalService.getEficienciaTerminalFlex(plan, aing));
 	}
 
 }

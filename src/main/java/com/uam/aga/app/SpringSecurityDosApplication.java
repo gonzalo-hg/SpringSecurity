@@ -34,6 +34,8 @@ public class SpringSecurityDosApplication {
 	}
 	
 	/**
+	 * 
+	 * mvnw package -Dmaven.test.failure.ignore=true && java -jar target/gs-spring-boot-docker-0.1.0.jar
 	 * Se crea un componente que va a utilizar spring para codificar el password
 	 * @return 
 	 */

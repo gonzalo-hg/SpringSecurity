@@ -35,9 +35,6 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 	@Autowired
 	private  AuthenticationManager authenticationManager;
 	
-	@Autowired
-	private UsuarioServiceImpl usuarioService;
-
 	/**
 	 * Contructor para crear la autenticacion
 	 * @param authenticationManager
@@ -123,7 +120,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		String accessToken = JWT.create()
 				//pasamos el nombre del usuario en una cedena
 				.withSubject(usuario.getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() +10*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
+				.withExpiresAt(new Date(System.currentTimeMillis() +60*60*1000))//Se define el tiempo del token que son 10 minutos de la hora actual
 				.withIssuer(request.getRequestURL().toString())
 				.withClaim("roles", usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				//.withPayload(sss)
@@ -133,7 +130,7 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		//usuarioService.getUsuario(nomnbreU);
 		String refreshToken = JWT.create()
 				.withSubject(usuario.getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() +30*60*1000))
+				.withExpiresAt(new Date(System.currentTimeMillis() +60*60*1000))
 				.withIssuer(request.getRequestURL().toString())
 				.sign(algorithm);
 		Map<String, String> tokens  = new HashMap<>();

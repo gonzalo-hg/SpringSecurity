@@ -47,9 +47,15 @@ public class EficienciaTerminalService {
 			log.error(e.getMessage());
 		}
 
-		query.addCriteria(new Criteria().andOperator(Criteria.where("PLA").is(pla),
-				Criteria.where("TRII").is(aTrii + "O"), Criteria.where("UT_AA").is(aUtaa + "P")).orOperator(
-						Criteria.where("EDO").is("5"), Criteria.where("EDO").is("6"), Criteria.where("EDO").is("12")));
+		query.addCriteria(new Criteria()
+				.andOperator(
+				Criteria.where("PLA").is(pla),
+				Criteria.where("TRII").is(aTrii + "O"), 
+				Criteria.where("UT_AA").is(aUtaa + "P"))
+				.orOperator(
+						Criteria.where("EDO").is("5"), 
+						Criteria.where("EDO").is("6"), 
+						Criteria.where("EDO").is("12")));
 
 		int cantidadAlumnos = (int) mongoTemplate.count(query, Alumno.class);
 
@@ -66,7 +72,7 @@ public class EficienciaTerminalService {
 	public int getAdminitosAnio(String anio, String plan) {
 
 		Query query = new Query();
-		query.addCriteria(new Criteria().andOperator(Criteria.where("AING").is(anio), Criteria.where("PLA").is(plan)));
+		
 		try {
 			if (anio.equals("") || plan.equals("")) {
 				throw new CustomException("Los campos no pueden ser nulos");
@@ -75,7 +81,49 @@ public class EficienciaTerminalService {
 		} catch (CustomException e) {
 			log.error(e.getMessage());
 		}
+		query.addCriteria(new Criteria().
+				andOperator(
+						Criteria.where("AING").is(anio), 
+						Criteria.where("PLA").is(plan)));
 		int alumnosAdimitidos = (int) mongoTemplate.count(query, Alumno.class);
 		return alumnosAdimitidos;
+	}
+	
+	/**
+	 * Servicio que consulta el numero de alumnos egresados con una
+	 * eficiencia terminal FLEXIBLE
+	 * @param plan
+	 * @param aing
+	 * @return
+	 */
+	public int getEficienciaTerminalFlex(String plan, String aing) {
+		
+		Query query = new Query();
+		
+		try {
+			if (aing == null || plan == null) {
+				throw new CustomException("Los campos no pueden ser nulos");
+			}
+
+		} catch (CustomException e) {
+			log.error(e.getMessage());
+		}
+		
+		query.addCriteria(new Criteria()
+				.andOperator(
+						Criteria.where("PLA").is(plan),
+						Criteria.where("TRII").is(aing + "O"))
+				.orOperator(
+						Criteria.where("NTRC").is(13),
+						Criteria.where("NTRC").is(14),
+						Criteria.where("NTRC").is(15),
+						Criteria.where("UT_AA").is((Integer.parseInt(aing) +4) + "O"),
+						Criteria.where("UT_AA").is((Integer.parseInt(aing) +5) + "I"),
+						Criteria.where("UT_AA").is((Integer.parseInt(aing) +5) + "P"))
+				);
+		System.out.println(query);
+		int cantidadAlumnos = (int) mongoTemplate.count(query, Alumno.class);
+		
+		return cantidadAlumnos;
 	}
 }
