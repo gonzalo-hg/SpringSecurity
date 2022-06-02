@@ -6,12 +6,12 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+/*import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;*/
 import org.springframework.stereotype.Service;
 
 import com.uam.aga.app.repository.RoleRepository;
@@ -24,29 +24,29 @@ import mx.uam.springboot.app.negocio.modelo.Usuario;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
-public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
+@Slf4j//implements UsuarioService, UserDetailsService
+public class UsuarioServiceImpl {
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired 
-	private  PasswordEncoder passwordEnconder; //La usamos para codificar la contraseña
-	
-	
-	private Usuario usuario;
-	
-	
+	//@Autowired
+//	private UsuarioRepository usuarioRepository;
+
+	//@Autowired
+	//private RoleRepository roleRepository;
+
+	//@Autowired
+	//private  PasswordEncoder passwordEnconder; //La usamos para codificar la contraseña
+
+
+	//private Usuario usuario;
+
+
 	/**
 	 * Metodo que siver para almacenar usuarios con la inyeccion
 	 * del UsuarioRepository
 	 * @param usuario
 	 * @return el usuario guardado
 	 */
-	@Override
+	/*@Override
 	public Usuario saveUsuario(Usuario usuario){
 		log.info("Se guardo un usuario {} en la BD",usuario.getNombre());
 		usuario.setPassword(passwordEnconder.encode(usuario.getPassword()));
@@ -55,64 +55,63 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		System.out.println("USuario guardado Service: "+usuario);
 		
 		return usuarioRepository.save(usuario);
-	}
-	
+	}*/
+
 	/**
 	 * Metodo que siver para almacenar usuarios con la inyeccion
 	 * del RoleRepository
 	 * @param Rol
 	 * @return el rol guardado
 	 */
-	@Override
+	/*@Override
 	public Rol saveRole(Rol role) {
 		log.info("Se guardo un role {} en la BD", role.getNombre());
 		return roleRepository.save(role);
-	}
+	}*/
 
 	/**
 	 * Metodo que siver para agregar un rol al usuario 
-	 * @param 
-	 * 
+	 * @param
+	 *
 	 */
-	@Override
-	public void addRolUsuario(String username, String rolName) {
+	//@Override
+	/*public void addRolUsuario(String username, String rolName) {
 		log.info("Agregando un role {} al usuario {} en la BD", rolName, username);
 		 usuario = usuarioRepository.findByUsername(username);
 		Rol role = roleRepository.findByNombre(rolName);
 		usuario.getRoles().add(role);
 		usuarioRepository.save(usuario);
- 	}
- 
+ 	}*/
+
 	/**
 	 * Metodo que siver para buscar un usuario
 	 * por medio de su username 
-	 * @param 
+	 * @param
 	 * @return El usuario encontrado.
 	 */
-	@Override
-	public Usuario getUsuario(String username) {
-		return usuarioRepository.findByUsername(username);
-	}
+//@Override
+	//public Usuario getUsuario(String username) {
+	//	return usuarioRepository.findByUsername(username);
+	//}
 
 	/**
 	 * Metodo que siver para obtener todos los usuarios
 	 * registrados en la BD
-
 	 * @return La lista de usuarios en la BD
 	 */
-	@Override
-	public List<Usuario> getUsuarios() {	
-		return usuarioRepository.findAll();
-	}
+	//@Override
+	//public List<Usuario> getUsuarios() {
+	//	return usuarioRepository.findAll();
+	//}
 	/***
 	 * Este metodo se implementa para cargar 
 	 * los usuarios desde la base de datos
 	 * y se devuelve el usuario encontrado con seguridad
 	 * @param Es el nombre de usuario a encontrar
-	 * 
+	 *
 	 */
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	//@Override
+	/*public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario = usuarioRepository.findByUsername(username);
 		if(usuario == null) {
 			log.error("USuario no encontrado en la bd");
@@ -131,8 +130,8 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		return new User(usuario.getUsername(), usuario.getPassword(),authorities);
 	}
 
+}*/
 }
-
 /**
  * Autenticacion es verificar quien eres
  * 

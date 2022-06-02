@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.EncryptedDocumentException;
+/*import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -30,7 +30,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;*/
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -38,7 +38,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -78,7 +78,7 @@ public class AlumnoService {
 	 * @param matricula La matrícula del alumno a consultar
 	 * @return El alumno cuya MAT=matricula si existe, null en caso contrario
 	 */
-	@Secured({ "user", "admin" })
+	//@Secured({ "user", "admin" })
 	public Alumno findByMatricula(String matricula) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("matricula").is(matricula));
@@ -375,8 +375,8 @@ public class AlumnoService {
 		return edad.getYears();
 	}
 
-	@SuppressWarnings("deprecation")
-	public void getExcel() throws EncryptedDocumentException, IOException, InvalidFormatException {
+	//@SuppressWarnings("deprecation")
+	/*public void getExcel() throws EncryptedDocumentException, IOException, InvalidFormatException {
 		File f = new File("D:\\PROYECTO_TERMINAL\\excel\\activosTutor.xls");
 		// String ruta = "D:\\PROYECTO_TERMINAL\\excel\\activosTutor.xls";
 		
@@ -487,7 +487,7 @@ public class AlumnoService {
 			
 		}
 
-	}
+	}*/
 	
 
 

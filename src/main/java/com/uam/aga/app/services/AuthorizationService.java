@@ -26,7 +26,7 @@ import mx.uam.springboot.app.negocio.modelo.Usuario;
 @Service
 public class AuthorizationService {
 
-	public static final String TOKEN_PREFIX = "Bearer ";
+	/*public static final String TOKEN_PREFIX = "Bearer ";
 	
 	@Autowired
 	private UsuarioService usuarioService;
@@ -72,5 +72,5 @@ public class AuthorizationService {
 		}else {
 			throw new RuntimeException("El token ha expirado, se tiene que actualizar");
 		}
-	}
+	}*/
 }

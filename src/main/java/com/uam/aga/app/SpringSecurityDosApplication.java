@@ -1,6 +1,6 @@
 package com.uam.aga.app;
 
-import java.io.File;
+/*import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,11 +13,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.CommandLineRunner;*/
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.uam.aga.app.services.UsuarioServiceImpl;
 
@@ -39,10 +39,10 @@ public class SpringSecurityDosApplication {
 	 * Se crea un componente que va a utilizar spring para codificar el password
 	 * @return 
 	 */
-	@Bean
+	/*@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
+	}*/
 	
 	/*@Bean
 	CommandLineRunner run(UsuarioServiceImpl usuarioService) {

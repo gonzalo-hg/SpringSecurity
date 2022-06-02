@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
+/*import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;*/
 
 import com.uam.aga.app.filters.CustomAuthentitcationFilter;
 import com.uam.aga.app.filters.CustomAuthorizationFilter;
@@ -25,22 +25,22 @@ import com.uam.aga.app.filters.CustomAuthorizationFilter;
  * @author gonzalo
  *
  */
-@Configuration
-@EnableWebSecurity
-@RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+//@Configuration
+//@EnableWebSecurity
+//@RequiredArgsConstructorextends WebSecurityConfigurerAdapter
+public class SecurityConfig {
 	
 	/**
 	 * 
 	 */
-	@Autowired
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	//@Autowired
+	//private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	/**
 	 * La inyeccion de esta clase es para 
 	 */
-	@Autowired
-	private  UserDetailsService userDetailsService;
+	//@Autowired
+	//private  UserDetailsService userDetailsService;
 	
 	/**
 	 * En este metodo anulamos el configure por default. Crea los usuarios y 
@@ -48,17 +48,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	 * @param Nos sirve para risgtrar los usuarios
 	 * @throws 
 	 */
-	@Override
+	/*@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-	}
+	}*/
 	
 		 /*
 		 * DEshabilitamos la falsificacion de solicitudes entre sitios	
 		 * Luego se crea la politica de gestion de sesisones  httpp
 		 * **/
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {	
+	//@Override
+	/*protected void configure(HttpSecurity http) throws Exception {	
 		CustomAuthentitcationFilter customAuthentitcationFilter =  new CustomAuthentitcationFilter(authenticationManagerBean());
 		
 		//Cambiamos el url que tiene por defecto Spring SEcurity, para poder agregar login 
@@ -74,10 +74,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		//http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(customAuthentitcationFilter);
 		http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-	}	
+	}	*/
 
-	@Bean
+	/*@Bean
 	public AuthenticationManager authenticationManagerBuild() throws Exception{
 		return super.authenticationManagerBean();
-	}
+	}*/
 }

@@ -11,14 +11,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+/*import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;*/
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -29,25 +29,25 @@ import com.uam.aga.app.services.UsuarioServiceImpl;
 
 import mx.uam.springboot.app.negocio.modelo.Usuario;
 
+//extends UsernamePasswordAuthenticationFilter
+public class CustomAuthentitcationFilter {
 
-public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationFilter{
-
-	@Autowired
-	private  AuthenticationManager authenticationManager;
+	//@Autowired
+	//private  AuthenticationManager authenticationManager;
 	
 	/**
 	 * Contructor para crear la autenticacion
 	 * @param authenticationManager
 	 */
-	public CustomAuthentitcationFilter(AuthenticationManager authenticationManager) {
+	/*public CustomAuthentitcationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
-	}
+	}*/
 	
 	/**
 	 * Se anula la autenticacion por default de Spring 
 	 * Se hace la autenticacion cada vez que el usuario quiere iniciar sesion 
 	 */
-	@Override
+	/*@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		String username = obtainUsername(request);
@@ -77,10 +77,10 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 			} catch (IOException e) {
 				e.printStackTrace(); 
 			}
-		}
+		}*/
 
 		//Se devuelve el username pero sin espacios en blanco, al inicio o final
-		username = username.trim();
+		/*username = username.trim();
 		
 		//Se agrega el request, el usuario que pide inicio de sesio
 		//Y el administrador de hacer autetnica con los datos del request
@@ -90,14 +90,14 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		System.out.println("Status: "+response.getStatus());
 		return authenticationManager.authenticate(authToken);
 	}
-	
+	*/
 	/***
 	 * https://drive.google.com/file/d/1NpJpb9Kcrj9ani1qI0Fm5jNecErHQKrQ/view?usp=sharing
 	 *Este metodo es llamdao cuando la autenticacion fue exitosa
 	 *y se genera el token para enviar la informacion del usuario
 	 *@param request
 	 */
-	@Override
+	/*@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authentication) throws IOException, ServletException {
 		System.out.println("request: "+ request);
@@ -145,14 +145,14 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		response.setStatus(200);
 		response.setContentType("application/json");
 		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-	}
+	}*/
 	
 	/**
 	 * Este metodo se lanza cuando el usuario o la contraseña no son validos o si son nulos
 	 * Se anula el metodo unsuccessfulAuthentication de Spring para personalizarlo de la siguiente manera
 	 * La respuesta es un 401
 	 */
-	@Override
+	/*@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
 		
@@ -167,5 +167,5 @@ public class CustomAuthentitcationFilter extends UsernamePasswordAuthenticationF
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 		response.setStatus(401);
 		response.setContentType("application/json");
-	}
+	}*/
 }

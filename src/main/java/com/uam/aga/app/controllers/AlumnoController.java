@@ -6,8 +6,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+//import org.apache.poi.EncryptedDocumentException;
+//import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -186,8 +186,8 @@ public class AlumnoController {
 		return ResponseEntity.status(HttpStatus.OK).body(alumnoService.returnStudetsDataDateBirth(anioIngreso));
 	}
 	
-	@GetMapping(path = "/excel")
+	/*@GetMapping(path = "/excel")
 	public void getE() throws EncryptedDocumentException, IOException, InvalidFormatException {
 		 alumnoService.getExcel();
-	}
+	}*/
 }

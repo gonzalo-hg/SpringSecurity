@@ -39,30 +39,30 @@ public class UsuarioController {
 	 * Meotodo que devuelve una lista de usuarios mediante 
 	 * @return usuarios
 	 */
-	@GetMapping("/usuario")
+	/*@GetMapping("/usuario")
 	public ResponseEntity<List<Usuario>>getUsuarios(){
 		System.out.println("Response: "+ResponseEntity.ok().body(usuarioService.getUsuarios()));
 		return ResponseEntity.ok().body(usuarioService.getUsuarios());
-	}
+	}*/
 	
-	@PostMapping(value = "/usuario/guardar",consumes = MediaType.APPLICATION_JSON_VALUE)
+	/*@PostMapping(value = "/usuario/guardar",consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Usuario>guardarUsuario( @RequestBody Usuario usuario){
 		URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/usuario/guardar").toString());
 		System.out.println("Usuario guardado Controller: "+ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario)));
 		return ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario));
-	}
+	}*/
 	
-	@PostMapping("/role/guardar")
+	/*@PostMapping("/role/guardar")
 	public ResponseEntity<Rol>guardarRol( @RequestBody Rol role){
 		URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/guardar").toString());
 		return ResponseEntity.created(uri).body(usuarioService.saveRole(role));
-	}
+	}*/
 	
-	@PostMapping("/role/agregaUsuario")
+	/*@PostMapping("/role/agregaUsuario")
 	public ResponseEntity<?>agregaRolUsuario( @RequestBody RoleDeUsuario role){
 		usuarioService.addRolUsuario(role.getNombreUsuario(), role.getRoleName());
 		return ResponseEntity.ok().build();
-	}
+	}*/
 	
 	@GetMapping("/alumnos/solo")
 	public List<Alumno> buscaUno() {
